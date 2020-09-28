@@ -1,18 +1,20 @@
 # goup
 
-`goup` is a Go version manager based on https://github.com/golang/dl.
-I have been annoyed with the long wait time for a package manager to update Go to the latest version, particularly on Linux.
-I made `goup` as a simple solution to make Go version management easier without injecting junks into my shell. 
+`goup` is a simple Go version manager based on https://github.com/golang/dl.
+It is notorious that an operating system's package manager takes a long time to update Go to the latest version, particularly on Linux distros.
+`goup` makes Go version management easier with less than 100 lines of bash.
+And it does not inject junks into your shell, like other version managers.
 
 ## How it works
 
-`goup` downloads specified version of Go using `go get golang.org/dl/<version>` and symlinks downloaded version to `$HOME/sdk/current`.
+`goup update` downloads specified version of Go using `go get golang.org/dl/<version>` and symlinks downloaded version to `$HOME/sdk/current`.
 `goup init` exports `$HOME/sdk/current/bin` to your `PATH`. That's it!
 
 ## Prerequisites
 
-`goup` requires a version of Go (even an outdated version!) to function becuase it downloads Go using `go get golang.org/dl/<version>`.
-You can install Go with a package manager. For example, `brew install go` or `apt-get install go`.
+`goup` requires a version of Go (even an outdated one!) to compile the [downloader](https://github.com/golang/dl) with `go get golang.org/dl/<version>`.
+Go should be available in most package managers, even if the version is not always up-to-date.
+For example, `brew install go` on Mac or `apt-get install go` on Debian.
 
 ## Installtion
 
@@ -47,6 +49,12 @@ go1.15.2
 $ go env GOROOT
 /Users/owen/sdk/current
 ```
+
+## Wish List
+
+The Go team is working on a `getgo` CLI to provide a one-liner installation of the latest Go, similar to rustup: https://github.com/golang/go/issues/23381.
+A prototype was done, but it is never productionized.
+I hope that `getgo` is ready soon.
 
 ## License
 
