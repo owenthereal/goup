@@ -32,11 +32,13 @@ cmd_init(){
 
 cmd_update(){
   local ver="${1}"
+
+  # Get the latest Go version
   if [ -z "${ver}" ]; then
     ver=$(curl -s 'https://golang.org/VERSION?m=text')
   fi
 
-  # add go prefix, e.g., go1.15.2
+  # Add go prefix, e.g., go1.15.2
   if [[ "${ver}" != go* ]]; then
     ver="go${ver}"
   fi
@@ -56,7 +58,13 @@ cmd_update(){
 cmd_show(){
   local path="$(readlink -f $HOME/sdk/current)"
   local prefix="$HOME/sdk/"
-  echo ${path#$prefix}
+  local ver="${path#$prefix}"
+
+  if [ -z "$ver" ] || [ "$ver" == "current" ]; then
+    echo "Go version is not found. Try downloading with $ProgName update"
+  else
+    echo "$ver"
+  fi
 }
 
 subcommand=$1
