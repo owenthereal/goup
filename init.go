@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	envFileContent = `export PATH="$HOME/.go/bin":"$HOME/.go/current/bin:$PATH`
+	envFileContent = `export PATH="$HOME/.go/bin":"$HOME/.go/current/bin":$PATH`
 
 	instruction = `To get started you need goup's ($HOME/.go/bin) and Go's bin directory ($HOME/.go/current/bin)
 in your PATH environment variable. Add the following to your shell startup script:
