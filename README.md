@@ -1,11 +1,13 @@
 # goup
 
-`goup` is a simple Go installer. 
-It is notorious that an operating system's package manager takes a long time to update Go to the latest version, particularly on Linux distros.
-`goup` makes Go installation and version management easier.
-Besides, `goup` does not inject junks into your shell, like other version managers.
+`goup` (pronounced Go Up) is a simple Go installer and version manager.
 
-`goup` is heavily inspired by [golang/dl](https://github.com/golang/dl) and [getgo](https://github.com/golang/tools/tree/master/cmd/getgo).
+It is notorious that an operating system's package manager takes time to update Go to the latest version, particularly on Linux distros.
+`goup` makes Go installation and version management easy, without tying yourself to the Go release cycle of your package manager.
+You can download the latest version (or any version) of Go with one command.
+Besides, `goup` does not inject junks into your shell, like other version managers: it only exports the Go bin directory to yoru PATH environment.
+
+`goup` is written in Go and is heavily inspired by [golang/dl](https://github.com/golang/dl) & [getgo](https://github.com/golang/tools/tree/master/cmd/getgo).
 
 ## How it works
 
@@ -16,11 +18,11 @@ Besides, `goup` does not inject junks into your shell, like other version manage
 ## Installation
 
 ```
-$ curl -sSf https://raw.githubusercontent.com/jingweno/goup/master/install.sh | sh
+curl -sSf https://raw.githubusercontent.com/jingweno/goup/master/install.sh | sh
 
 ```
 
-You need goup's bin directory ($HOME/.go/bin) and Go's bin directory ($HOME/.go/current/bin)
+You need goup's bin directory (`$HOME/.go/bin`) and Go's bin directory (`$HOME/.go/current/bin`)
 in your PATH environment variable. Add the following to your shell startup script:
 
 ```
