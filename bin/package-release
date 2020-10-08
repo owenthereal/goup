@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+set -e
+
+version() {
+  ver_file="version.go"
+  ver="$(git describe --tags HEAD 2>/dev/null || true)"
+
+  if [ -z "$ver" ]; then
+    ver="$(grep -w 'Version =' "$ver_file" | cut -d'"' -f2)"
+    sha="$(git rev-parse --short HEAD 2>/dev/null || true)"
+    [ -z "$sha" ] || ver="${ver}-g${sha}"
+  fi
+
+  echo "${ver#v}"
+}
+
+OSARCH="darwin/amd64 linux/amd64 linux/386 linux/arm"
+
+echo "Packaging goup $(version)"
+echo
+
+rm -rf release
+gox -osarch="$OSARCH" -output="release/{{.OS}}-{{.Arch}}-$(version)"
+echo
