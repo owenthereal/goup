@@ -15,7 +15,7 @@ version() {
   echo "${ver#v}"
 }
 
-OSARCH="darwin/amd64 linux/amd64 linux/386 linux/arm"
+OSARCH="darwin/amd64 linux/amd64 linux/386 linux/arm windows/amd64 windows/386 freebsd/amd64 freebsd/arm"
 
 echo "Packaging goup $(version)"
 echo
