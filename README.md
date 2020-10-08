@@ -22,7 +22,7 @@ curl -sSf https://raw.githubusercontent.com/jingweno/goup/master/install.sh | sh
 
 ```
 
-And to install by skipping the confirmation prompt:
+And to install by skipping the confirmation prompt for automation:
 
 ```
 curl -sSf https://raw.githubusercontent.com/jingweno/goup/master/install.sh | sh -s -- '--skip-prompt'
