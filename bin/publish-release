@@ -5,10 +5,6 @@ set -e
 project_name="owenthereal/goup"
 
 version_file="version.go"
-if git diff --exit-code >/dev/null -- "$version_file"; then
-  echo "Update the version in $version_file and try again." >&2
-  exit 1
-fi
 version="$(grep -w 'Version =' "$version_file" | cut -d'"' -f2)"
 
 tag_name="v${version}"

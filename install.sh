@@ -11,6 +11,7 @@
 set -u
 
 GOUP_GH_RELEASE_API="${GOUP_GH_RELEASE_API:-https://api.github.com/repos/owenthereal/goup/releases/latest}"
+GOUP_GH_RELEASE_PREFIX="https://github.com/owenthereal/goup/releases/download"
 
 
 main() {
@@ -32,7 +33,7 @@ main() {
   local _latest_tag
   _latest_tag="$(ensure downloader "$GOUP_GH_RELEASE_API" "" | grep -oP '"tag_name": "\K(.*)(?=")')"
 
-  local _url="https://github.com/owenthereal/upterm/releases/download/v${_latest_tag}/${_arch}${_ext}"
+  local _url="${GOUP_GH_RELEASE_PREFIX}/${_latest_tag}/${_arch}-${_latest_tag}${_ext}"
   local _dir="$HOME/.go/bin"
   local _file="${_dir}/goup${_ext}"
 
@@ -40,7 +41,7 @@ main() {
   ensure downloader "$_url" "$_file"
   ensure chmod u+x "$_file"
   if [ ! -x "$_file" ]; then
-    printf '%s\n' "Cannot execute $_file (likely because of mounting /tmp as noexec)." 1>&2
+    printf '%s\n' "Cannot execute $_file." 1>&2
     printf '%s\n' "Please copy the file to a location where you can execute binaries and run ./goup${_ext} init --update." 1>&2
     exit 1
   fi
@@ -75,6 +76,14 @@ ensure() {
   if ! "$@"; then err "command failed: $*"; fi
 }
 
+say() {
+  printf 'goup: %s\n' "$1"
+}
+
+err() {
+  say "$1" >&2
+  exit 1
+}
 
 # This wraps curl or wget. Try curl first, if not installed,
 # use wget instead.
@@ -120,7 +129,6 @@ get_architecture() {
   fi
 
   case "$_ostype" in
-
     Linux)
       _ostype=linux
       ;;
@@ -140,27 +148,24 @@ get_architecture() {
     *)
       err "unrecognized OS type: $_ostype"
       ;;
+  esac
 
-    esac
+  case "$_cputype" in
+    i386 | i486 | i686 | i786 | x86)
+      _cputype=386
+      ;;
 
-    case "$_cputype" in
+    xscale | arm | armv6l | armv7l |armv8l)
+      _cputype=arm
+      ;;
 
-      i386 | i486 | i686 | i786 | x86)
-        _cputype=386
-        ;;
+    aarch64 | x86_64 | x86-64 | x64 | amd64)
+      _cputype=amd64
+      ;;
 
-      xscale | arm | armv6l | armv7l |armv8l)
-        _cputype=arm
-        ;;
-
-      aarch64 | x86_64 | x86-64 | x64 | amd64)
-        _cputype=amd64
-        ;;
-
-      *)
-        err "unknown CPU type: $_cputype"
-
-      esac
+    *)
+      err "unknown CPU type: $_cputype"
+  esac
 
   _arch="${_ostype}-${_cputype}"
 
