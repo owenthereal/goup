@@ -47,11 +47,11 @@ main() {
   ensure chmod u+x "$_file"
   if [ ! -x "$_file" ]; then
     printf '%s\n' "Cannot execute $_file." 1>&2
-    printf '%s\n' "Please copy the file to a location where you can execute binaries and run ./goup${_ext} init --update." 1>&2
+    printf '%s\n' "Please copy the file to a location where you can execute binaries and run ./goup${_ext} init --install." 1>&2
     exit 1
   fi
 
-  ignore "$_file" init --update < /dev/tty
+  ignore "$_file" init --install < /dev/tty
 
   local _retval=$?
   return "$_retval"

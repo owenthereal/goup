@@ -32,13 +32,13 @@ func init() {
 	http.DefaultTransport = &userAgentTransport{http.DefaultTransport}
 }
 
-var updateCmd = &cobra.Command{
-	Use:   "update [version]",
-	Short: `Update Go to a version (e.g. "1.15.2", or "tip"). If empty, use the latest version.`,
-	RunE:  runUpdate,
+var installCmd = &cobra.Command{
+	Use:   "install [version]",
+	Short: `Install Go by providing a version (e.g. "1.15.2", or "tip"). If empty, use the latest version.`,
+	RunE:  runInstall,
 }
 
-func runUpdate(cmd *cobra.Command, args []string) error {
+func runInstall(cmd *cobra.Command, args []string) error {
 	var (
 		ver string
 		err error
@@ -76,7 +76,7 @@ func runUpdate(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	logger.Printf("Activated %v", ver)
+	logger.Printf("Default Go is set to '%s'", ver)
 
 	return nil
 }
@@ -99,28 +99,18 @@ func latestGoVersion() (string, error) {
 	return strings.TrimSpace(string(version)), nil
 }
 
-func symlink(version string) error {
-	current, err := currentGoRoot()
-	if err != nil {
-		return err
-	}
-
-	goroot, err := goroot(version)
-	if err != nil {
-		return err
-	}
+func symlink(ver string) error {
+	current := currentGoRootDir()
+	version := versionGoRootDir(ver)
 
 	// ignore error, similar to rm -f
 	os.Remove(current)
 
-	return os.Symlink(goroot, current)
+	return os.Symlink(version, current)
 }
 
 func install(version string) error {
-	targetDir, err := goroot(version)
-	if err != nil {
-		return fmt.Errorf("%s: %v", version, err)
-	}
+	targetDir := versionGoRootDir(version)
 
 	if _, err := os.Stat(filepath.Join(targetDir, unpackedOkay)); err == nil {
 		logger.Printf("%s: already downloaded in %v", version, targetDir)
@@ -178,10 +168,7 @@ func install(version string) error {
 }
 
 func installTip(clNumber string) error {
-	root, err := goroot("gotip")
-	if err != nil {
-		return fmt.Errorf("gotip: %v", err)
-	}
+	root := versionGoRootDir("gotip")
 
 	git := func(args ...string) error {
 		cmd := exec.Command("git", args...)
@@ -578,27 +565,6 @@ func exe() string {
 		return ".exe"
 	}
 	return ""
-}
-
-func goroot(version string) (string, error) {
-	home, err := homedir()
-	if err != nil {
-		return "", fmt.Errorf("failed to get home directory: %v", err)
-	}
-	return filepath.Join(home, ".go", version), nil
-}
-
-func currentGoRoot() (string, error) {
-	home, err := homedir()
-	if err != nil {
-		return "", fmt.Errorf("failed to get home directory: %v", err)
-	}
-
-	return filepath.Join(home, ".go", "current"), nil
-}
-
-func homedir() (string, error) {
-	return os.UserHomeDir()
 }
 
 func validRelPath(p string) bool {

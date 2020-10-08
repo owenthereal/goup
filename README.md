@@ -1,19 +1,19 @@
-# goup
+# Goup
 
-`goup` (pronounced Go Up) is a simple Go installer and version manager.
+`goup` (pronounced Go Up) is an elegant Go installer and version manager.
 
 It is notorious that an operating system's package manager takes time to update Go to the latest version, particularly on Linux distros.
-`goup` makes Go installation and version management easy, without tying yourself to the Go release cycle of your package manager.
-You can download the latest version (or any version) of Go with one command.
-Besides, `goup` does not inject junks into your shell, like other version managers: it only exports the Go bin directory to yoru PATH environment.
+`goup` makes Go installation and version management easy.
+You can download the latest version (or any version) of Go with one command, without tying yourself to the availability of Go in your package manager.
+Besides, `goup` does not inject junks into your shell, like other version managers: it only exports the Goup bin directory and the Go bin directory to your PATH environment.
 
-`goup` is written in Go and is heavily inspired by [golang/dl](https://github.com/golang/dl) & [getgo](https://github.com/golang/tools/tree/master/cmd/getgo).
+`goup` is written in Go. It is heavily inspired by [Rustup](https://rustup.rs/), [golang/dl](https://github.com/golang/dl) and [getgo](https://github.com/golang/tools/tree/master/cmd/getgo).
 
 ## How it works
 
-* `goup init` outputs a file (`$HOME/.go/env`) that exports goup's (`$HOME/.go/bin`) and Go's (`$HOME/.go/current/bin`) bin directory in your PATH environment variable.
-* `goup update` downloads specified version of Go and symlinks downloaded version to `$HOME/.go/current`.
-* `goup show` shows the current installed Go version.
+* `goup install` downloads specified version of Go to`$HOME/.go/VERSION` and symlinks it to `$HOME/.go/current`.
+* `goup show` shows the activated Go version located at `$HOME/.go/current`.
+* `goup init` appends Goup's bin directory (`$HOME/.go/bin`) and Go's bin directory (`$HOME/.go/current/bin`) to your PATH environment variable.
 
 ## Installation
 
@@ -22,18 +22,10 @@ curl -sSf https://raw.githubusercontent.com/jingweno/goup/master/install.sh | sh
 
 ```
 
-You need goup's bin directory (`$HOME/.go/bin`) and Go's bin directory (`$HOME/.go/current/bin`)
-in your PATH environment variable. Add the following to your shell startup script:
-
-```
-echo 'source $HOME/.go/env' > ~/.bashrc # Equivalent of adding export PATH="$HOME/.go/bin":"$HOME/.go/current/bin:$PATH" to ~/.bashrc
-
-```
-
 ## Quick Start
 
 ```
-$ goup update
+$ goup install
 Downloaded   0.0% (    16384 / 121149509 bytes) ...
 Downloaded   6.9% (  8404928 / 121149509 bytes) ...
 Downloaded  17.3% ( 20987744 / 121149509 bytes) ...
@@ -53,7 +45,7 @@ $ go env GOROOT
 $ go version
 go version go1.15.2 linux/amd64
 
-$ goup update tip
+$ goup install tip
 Cloning into '/home/owen/.go/gotip'...
 remote: Counting objects: 10041, done
 remote: Finding sources: 100% (10041/10041)

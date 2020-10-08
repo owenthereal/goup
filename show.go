@@ -15,17 +15,22 @@ var showCmd = &cobra.Command{
 }
 
 func runShow(cmd *cobra.Command, args []string) error {
-	current, err := currentGoRoot()
+	ver, err := currentGoVersion()
 	if err != nil {
 		return err
 	}
 
-	goroot, err := os.Readlink(current)
-	if err != nil {
-		return err
-	}
-
-	fmt.Println(filepath.Base(goroot))
+	fmt.Println(ver)
 
 	return nil
+}
+
+func currentGoVersion() (string, error) {
+	current := currentGoRootDir()
+	goroot, err := os.Readlink(current)
+	if err != nil {
+		return "", err
+	}
+
+	return filepath.Base(goroot), nil
 }
