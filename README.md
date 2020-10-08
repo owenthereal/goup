@@ -9,20 +9,42 @@ Besides, `goup` does not inject junks into your shell, like other version manage
 
 ## How it works
 
-* `goup init` outputs a file (`$HOME/.go/env`) that exports goup's (`$HOME/.go/bin`) and Go's (`$HOME/.go/current/bin`) bin directory in yoru PATH environment variable.
+* `goup init` outputs a file (`$HOME/.go/env`) that exports goup's (`$HOME/.go/bin`) and Go's (`$HOME/.go/current/bin`) bin directory in your PATH environment variable.
 * `goup update` downloads specified version of Go and symlinks downloaded version to `$HOME/.go/current`.
 * `goup show` shows the current installed Go version.
 
-## Installtion
+## Installation
 
 ```
-curl -sSf https://raw.githubusercontent.com/jingweno/goup/master/install.sh | sh
+$ curl -sSf https://raw.githubusercontent.com/jingweno/goup/master/install.sh | sh
+Downloaded   0.0% (    16384 / 121149509 bytes) ...
+Downloaded   1.3% (  1621440 / 121149509 bytes) ...
+Downloaded  19.6% ( 23707472 / 121149509 bytes) ...
+Downloaded  37.4% ( 45268080 / 121149509 bytes) ...
+Downloaded  53.4% ( 64699936 / 121149509 bytes) ...
+Downloaded  58.7% ( 71171568 / 121149509 bytes) ...
+Downloaded  62.7% ( 75955648 / 121149509 bytes) ...
+Downloaded  64.3% ( 77954480 / 121149509 bytes) ...
+Downloaded  65.7% ( 79625072 / 121149509 bytes) ...
+Downloaded  70.3% ( 85162816 / 121149509 bytes) ...
+Downloaded  86.1% (104283376 / 121149509 bytes) ...
+Downloaded 100.0% (121149509 / 121149509 bytes)
+INFO[0012] Unpacking /home/owen/.go/go1.15.2/go1.15.2.linux-amd64.tar.gz ...
+INFO[0025] Success: go1.15.2 downloaded in /home/owen/.go/go1.15.2
+INFO[0025] Activated go1.15.2
+To get started you need goup's ($HOME/.go/bin) and Go's bin directory ($HOME/.go/current/bin)
+in your PATH environment variable. Add the following to your shell startup script:
+
+source $HOME/.go/env
+
+To configure your current shell run source $HOME/.go/env
+
+$ echo 'source $HOME/.go/env' > ~/.bashrc # Equivalent of adding export PATH="$HOME/.go/bin":"$HOME/.go/current/bin:$PATH" to ~/.bashrc
 ```
 
 ## Quick Start
 
 ```
-$ echo 'source $HOME/.go/env' > ~/.bashrc # Equivalent of adding export PATH="$HOME/.go/bin":"$HOME/.go/current/bin:$PATH" to ~/.bashrc
 $ goup update
 Downloaded   0.0% (    16384 / 121149509 bytes) ...
 Downloaded   6.9% (  8404928 / 121149509 bytes) ...
@@ -39,7 +61,7 @@ INFO[0022] Activated go1.15.2
 $ goup show
 go1.15.2
 $ go env GOROOT
-/home/owen/.go/current
+/home/owen/.go/go1.15.2
 ```
 
 ## License
