@@ -51,7 +51,7 @@ main() {
     exit 1
   fi
 
-  ignore "$_file" init --install < /dev/tty
+  ignore "$_file" init --install "$@"< /dev/tty
 
   local _retval=$?
   return "$_retval"
