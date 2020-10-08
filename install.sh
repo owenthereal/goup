@@ -10,7 +10,7 @@
 
 set -u
 
-GOUP_GH_RELEASE_API="${GOUP_GH_RELEASE_API:-https://api.github.com/repos/owenthereal/goup/releases/latest}"
+GOUP_GH_RELEASE_API="https://api.github.com/repos/owenthereal/goup/releases/latest"
 GOUP_GH_RELEASE_PREFIX="https://github.com/owenthereal/goup/releases/download"
 
 
@@ -32,6 +32,11 @@ main() {
 
   local _latest_tag
   _latest_tag="$(ensure downloader "$GOUP_GH_RELEASE_API" "" | grep -oP '"tag_name": "\K(.*)(?=")')"
+
+  if [ -z "$_latest_tag" ]; then
+    say "latest release tag not found"
+    return 1
+  fi
 
   local _url="${GOUP_GH_RELEASE_PREFIX}/${_latest_tag}/${_arch}-${_latest_tag}${_ext}"
   local _dir="$HOME/.go/bin"
