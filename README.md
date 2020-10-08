@@ -16,7 +16,7 @@ Besides, `goup` does not inject junks into your shell, like other version manage
 ## Installtion
 
 ```
-curl https://raw.githubusercontent.com/jingweno/goup/master/install.sh | sh
+curl -sSf https://raw.githubusercontent.com/jingweno/goup/master/install.sh | sh
 ```
 
 ## Quick Start
