@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+set -e
+
+project_name="owenthereal/goup"
+
+version_file="version.go"
+if git diff --exit-code >/dev/null -- "$version_file"; then
+  echo "Update the version in $version_file and try again." >&2
+  exit 1
+fi
+version="$(grep -w 'Version =' "$version_file" | cut -d'"' -f2)"
+
+tag_name="v${version}"
+
+assets=()
+for filename in $(ls ./release); do
+  assets+=( -a "./release/${filename}#${filename}" )
+done
+
+notes="$(git tag --list "$tag_name" --format='%(contents:subject)%0a%0a%(contents:body)')"
+
+if hub release --include-drafts | grep -q "^${tag_name}\$"; then
+  hub release edit "$tag_name" -m "" "${assets[@]}"
+elif [ $(wc -l <<<"$notes") -gt 1 ]; then
+  hub release create ${pre:+--prerelease} -F - "$tag_name" "${assets[@]}" <<<"$notes"
+else
+  { echo "${project_name} ${tag_name#v}"
+    echo
+    bin/changelog
+  } | hub release create --draft ${pre:+--prerelease} -F - "$tag_name" "${assets[@]}"
+fi
