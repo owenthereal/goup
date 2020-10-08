@@ -17,29 +17,15 @@ Besides, `goup` does not inject junks into your shell, like other version manage
 
 ```
 $ curl -sSf https://raw.githubusercontent.com/jingweno/goup/master/install.sh | sh
-Downloaded   0.0% (    16384 / 121149509 bytes) ...
-Downloaded   1.3% (  1621440 / 121149509 bytes) ...
-Downloaded  19.6% ( 23707472 / 121149509 bytes) ...
-Downloaded  37.4% ( 45268080 / 121149509 bytes) ...
-Downloaded  53.4% ( 64699936 / 121149509 bytes) ...
-Downloaded  58.7% ( 71171568 / 121149509 bytes) ...
-Downloaded  62.7% ( 75955648 / 121149509 bytes) ...
-Downloaded  64.3% ( 77954480 / 121149509 bytes) ...
-Downloaded  65.7% ( 79625072 / 121149509 bytes) ...
-Downloaded  70.3% ( 85162816 / 121149509 bytes) ...
-Downloaded  86.1% (104283376 / 121149509 bytes) ...
-Downloaded 100.0% (121149509 / 121149509 bytes)
-INFO[0012] Unpacking /home/owen/.go/go1.15.2/go1.15.2.linux-amd64.tar.gz ...
-INFO[0025] Success: go1.15.2 downloaded in /home/owen/.go/go1.15.2
-INFO[0025] Activated go1.15.2
-To get started you need goup's ($HOME/.go/bin) and Go's bin directory ($HOME/.go/current/bin)
+
+```
+
+You need goup's bin directory ($HOME/.go/bin) and Go's bin directory ($HOME/.go/current/bin)
 in your PATH environment variable. Add the following to your shell startup script:
 
-source $HOME/.go/env
+```
+echo 'source $HOME/.go/env' > ~/.bashrc # Equivalent of adding export PATH="$HOME/.go/bin":"$HOME/.go/current/bin:$PATH" to ~/.bashrc
 
-To configure your current shell run source $HOME/.go/env
-
-$ echo 'source $HOME/.go/env' > ~/.bashrc # Equivalent of adding export PATH="$HOME/.go/bin":"$HOME/.go/current/bin:$PATH" to ~/.bashrc
 ```
 
 ## Quick Start
@@ -62,6 +48,37 @@ $ goup show
 go1.15.2
 $ go env GOROOT
 /home/owen/.go/go1.15.2
+$ go version
+go version go1.15.2 linux/amd64
+
+$ goup update tip
+Cloning into '/home/owen/.go/gotip'...
+remote: Counting objects: 10041, done
+remote: Finding sources: 100% (10041/10041)
+remote: Total 10041 (delta 1347), reused 6538 (delta 1347)
+Receiving objects: 100% (10041/10041), 23.83 MiB | 3.16 MiB/s, done.
+Resolving deltas: 100% (1347/1347), done.
+Updating files: 100% (9212/9212), done.
+INFO[0078] Updating the go development tree...
+From https://go.googlesource.com/go
+ * branch            master     -> FETCH_HEAD
+HEAD is now at 5d13781 cmd/cgo: add more architectures to size maps
+Building Go cmd/dist using /home/owen/.go/go1.15.2. (go1.15.2 linux/amd64)
+Building Go toolchain1 using /home/owen/.go/go1.15.2.
+Building Go bootstrap cmd/go (go_bootstrap) using Go toolchain1.
+Building Go toolchain2 using go_bootstrap and Go toolchain1.
+Building Go toolchain3 using go_bootstrap and Go toolchain2.
+Building packages and commands for linux/amd64.
+---
+Installed Go for linux/amd64 in /home/owen/.go/gotip
+Installed commands in /home/owen/.go/gotip/bin
+INFO[0297] Activated gotip
+$ goup show
+gotip
+$ go env GOROOT
+/home/owen/.go/gotip
+$ go version
+go version devel +5d13781 Thu Oct 8 00:28:09 2020 +0000 linux/amd64
 ```
 
 ## License
