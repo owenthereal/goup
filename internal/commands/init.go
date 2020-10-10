@@ -47,9 +47,10 @@ var (
 	initSkipPrompt  bool
 
 	initCmd = &cobra.Command{
-		Use:   "init",
-		Short: "Initialize the goup environment file",
-		RunE:  runInit,
+		Use:    "init",
+		Short:  "Initialize the goup environment file",
+		Hidden: true,
+		RunE:   runInit,
 	}
 )
 
