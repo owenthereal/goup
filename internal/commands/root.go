@@ -31,7 +31,6 @@ func NewCommand() *cobra.Command {
 
 	rootCmd.AddCommand(installCmd)
 	rootCmd.AddCommand(removeCmd)
-	rootCmd.AddCommand(initCmd)
 	rootCmd.AddCommand(showCmd)
 	rootCmd.AddCommand(listCmd)
 	rootCmd.AddCommand(versionCmd)

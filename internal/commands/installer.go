@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"runtime"
 	"text/template"
 
 	"github.com/spf13/cobra"
@@ -43,19 +44,56 @@ current shell run source $HOME/.go/env.
 )
 
 var (
-	initInstallFlag bool
-	initSkipPrompt  bool
-
-	initCmd = &cobra.Command{
-		Use:   "init",
-		Short: "Initialize the goup environment file",
-		RunE:  runInit,
-	}
+	installerCmdSkipInstallFlag bool
+	installerCmdSkipPrompt      bool
 )
 
-func init() {
-	initCmd.PersistentFlags().BoolVar(&initInstallFlag, "install", false, "Install the latest Go")
-	initCmd.PersistentFlags().BoolVar(&initSkipPrompt, "skip-prompt", false, "Skip confirmation prompt")
+func NewInstallerCommand() *cobra.Command {
+	rootCmd := &cobra.Command{
+		Use:   "get-goup",
+		Short: "The Goup installer",
+		RunE:  runInstaller,
+	}
+
+	rootCmd.PersistentFlags().BoolVar(&installerCmdSkipInstallFlag, "skip-install-go", false, "Skip installing Go")
+	rootCmd.PersistentFlags().BoolVar(&installerCmdSkipPrompt, "skip-prompt", false, "Skip confirmation prompt")
+
+	return rootCmd
+}
+
+const (
+	goupDownloadURLPrefix = "https://github.com/owenthereal/goup/releases/latest/download"
+)
+
+func runInstaller(cmd *cobra.Command, args []string) error {
+	if err := runDownload(); err != nil {
+		return err
+	}
+
+	return runInit(cmd, args)
+}
+
+func runDownload() error {
+	targetDir := goupBinDir()
+	if err := os.MkdirAll(targetDir, 0755); err != nil {
+		return err
+	}
+
+	var gext string
+	gos := runtime.GOOS
+	if gos == "windows" {
+		gext = ".exe"
+	}
+	garch := runtime.GOARCH
+	url := fmt.Sprintf("%s/%s-%s%s", goupDownloadURLPrefix, gos, garch, gext)
+	targetBin := filepath.Join(targetDir, "goup")
+
+	if err := copyFromURL(targetBin, url); err != nil {
+		return err
+	}
+
+	return os.Chmod(targetBin, 0771)
+
 }
 
 func runInit(cmd *cobra.Command, args []string) error {
@@ -113,7 +151,7 @@ func runInit(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	if initInstallFlag {
+	if !installerCmdSkipInstallFlag {
 		if err := runInstall(cmd, args); err != nil {
 			return err
 		}
@@ -123,7 +161,7 @@ func runInit(cmd *cobra.Command, args []string) error {
 }
 
 func prompt(query, defaultAnswer string) (string, error) {
-	if initSkipPrompt {
+	if installerCmdSkipPrompt {
 		return defaultAnswer, nil
 	}
 

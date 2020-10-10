@@ -14,15 +14,19 @@ Besides, `goup` does not inject magic into your shell, like other version manage
 ### One-liner
 
 ```
-curl -sSf https://raw.githubusercontent.com/owenthereal/goup/master/install.sh | sh
-
+curl -sSfLO https://github.com/owenthereal/goup/releases/latest/download/get-goup-$(uname) && \
+  chmod +x get-goup-$(uname) && \
+  ./get-goup-$(uname) && \
+  rm get-goup-$(uname)
 ```
 
 Install by skipping the confirmation prompt, e.g., for automation:
 
 ```
-curl -sSf https://raw.githubusercontent.com/owenthereal/goup/master/install.sh | sh -s -- '--skip-prompt'
-
+curl -sSfLO https://github.com/owenthereal/goup/releases/latest/download/get-goup-$(uname) && \
+  chmod +x get-goup-$(uname) && \
+  ./get-goup-$(uname) && \
+  rm get-goup-$(uname)
 ```
 
 ### Manual
