@@ -29,12 +29,12 @@ func NewCommand() *cobra.Command {
 		Short: "The Go installer",
 	}
 
-	rootCmd.AddCommand(installCmd)
-	rootCmd.AddCommand(removeCmd)
-	rootCmd.AddCommand(initCmd)
-	rootCmd.AddCommand(showCmd)
-	rootCmd.AddCommand(listCmd)
-	rootCmd.AddCommand(versionCmd)
+	rootCmd.AddCommand(installCmd())
+	rootCmd.AddCommand(removeCmd())
+	rootCmd.AddCommand(initCmd())
+	rootCmd.AddCommand(showCmd())
+	rootCmd.AddCommand(listCmd())
+	rootCmd.AddCommand(versionCmd())
 
 	return rootCmd
 }

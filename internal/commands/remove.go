@@ -8,11 +8,13 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var removeCmd = &cobra.Command{
-	Use:   "remove <version>",
-	Short: "Remove Go with a version",
-	Long:  "Remove Go by providing a version.",
-	RunE:  runRemove,
+func removeCmd() *cobra.Command {
+	return &cobra.Command{
+		Use:   "remove <version>",
+		Short: "Remove Go with a version",
+		Long:  "Remove Go by providing a version.",
+		RunE:  runRemove,
+	}
 }
 
 func runRemove(cmd *cobra.Command, args []string) error {

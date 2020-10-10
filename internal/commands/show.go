@@ -10,11 +10,13 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var showCmd = &cobra.Command{
-	Use:   "show",
-	Short: "Show installed Go",
-	Long:  "Show installed Go versions.",
-	RunE:  runShow,
+func showCmd() *cobra.Command {
+	return &cobra.Command{
+		Use:   "show",
+		Short: "Show installed Go",
+		Long:  "Show installed Go versions.",
+		RunE:  runShow,
+	}
 }
 
 func runShow(cmd *cobra.Command, args []string) error {

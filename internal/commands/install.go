@@ -33,8 +33,10 @@ const (
 
 var (
 	installCmdGoHostFlag string
+)
 
-	installCmd = &cobra.Command{
+func installCmd() *cobra.Command {
+	installCmd := &cobra.Command{
 		Use:   "install [version]",
 		Short: `Install Go with a version`,
 		Long: `Install Go by providing a version. If no version is provided, install
@@ -50,15 +52,15 @@ number can be provided.`,
 		PersistentPreRunE: preRunInstall,
 		RunE:              runInstall,
 	}
-)
 
-func init() {
 	gh := os.Getenv("GOUP_GO_HOST")
 	if gh == "" {
 		gh = goHost
 	}
 
 	installCmd.PersistentFlags().StringVar(&installCmdGoHostFlag, "host", gh, "host that is used to download Go. The GOUP_GO_HOST environment variable overrides this flag.")
+
+	return installCmd
 }
 
 func preRunInstall(cmd *cobra.Command, args []string) error {

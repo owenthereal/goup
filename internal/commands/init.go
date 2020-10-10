@@ -43,20 +43,22 @@ current shell run source $HOME/.go/env.
 )
 
 var (
-	initInstallFlag bool
-	initSkipPrompt  bool
+	initCmdSkipInstallFlag bool
+	initCmdSkipPromptFlag  bool
+)
 
-	initCmd = &cobra.Command{
+func initCmd() *cobra.Command {
+	initCmd := &cobra.Command{
 		Use:    "init",
 		Short:  "Initialize the goup environment file",
 		Hidden: true,
 		RunE:   runInit,
 	}
-)
 
-func init() {
-	initCmd.PersistentFlags().BoolVar(&initInstallFlag, "install", false, "Install the latest Go")
-	initCmd.PersistentFlags().BoolVar(&initSkipPrompt, "skip-prompt", false, "Skip confirmation prompt")
+	initCmd.PersistentFlags().BoolVar(&initCmdSkipInstallFlag, "skip-install", false, "Skip installing Go")
+	initCmd.PersistentFlags().BoolVar(&initCmdSkipPromptFlag, "skip-prompt", false, "Skip confirmation prompt")
+
+	return initCmd
 }
 
 func runInit(cmd *cobra.Command, args []string) error {
@@ -114,7 +116,7 @@ func runInit(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	if initInstallFlag {
+	if !initCmdSkipInstallFlag {
 		if err := runInstall(cmd, args); err != nil {
 			return err
 		}
@@ -124,7 +126,7 @@ func runInit(cmd *cobra.Command, args []string) error {
 }
 
 func prompt(query, defaultAnswer string) (string, error) {
-	if initSkipPrompt {
+	if initCmdSkipPromptFlag {
 		return defaultAnswer, nil
 	}
 
