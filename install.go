@@ -590,18 +590,9 @@ func versionArchiveURL(version string) string {
 	return fmt.Sprintf("%s/%s.%s-%s.%s", goDownloadBaseURL, version, goos, arch, ext)
 }
 
-const caseInsensitiveEnv = runtime.GOOS == "windows"
-
 // unpackedOkay is a sentinel zero-byte file to indicate that the Go
 // version was downloaded and unpacked successfully.
 const unpackedOkay = ".unpacked-success"
-
-func exe() string {
-	if runtime.GOOS == "windows" {
-		return ".exe"
-	}
-	return ""
-}
 
 func validRelPath(p string) bool {
 	if p == "" || strings.Contains(p, `\`) || strings.HasPrefix(p, "/") || strings.Contains(p, "../") {
