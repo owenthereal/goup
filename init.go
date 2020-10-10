@@ -48,7 +48,7 @@ var (
 
 	initCmd = &cobra.Command{
 		Use:   "init",
-		Short: "Initialize the goup environment file.",
+		Short: "Initialize the goup environment file",
 		RunE:  runInit,
 	}
 )
