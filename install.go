@@ -37,9 +37,9 @@ var (
 	installCmd = &cobra.Command{
 		Use:   "install [version]",
 		Short: `Install Go by providing a version. If empty, use the latest version.`,
-		Long: `Install Go by providing a version. If no version is provided, install the latest Go.
-The version can be any valid Go version available from https://golang.org/dl. If the
-version is 'tip', an optional change list (CL) number can be provided.`,
+		Long: `Install Go by providing a version. If no version is provided, install
+the latest Go. If the version is 'tip', an optional change list (CL)
+number can be provided.`,
 		Example: `
   goup install
   goup install 1.15.2
