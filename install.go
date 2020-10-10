@@ -25,9 +25,10 @@ import (
 )
 
 const (
-	goHost            = "golang.org"
-	goDownloadBaseURL = "https://dl.google.com/go"
-	goSourceGitURL    = "https://go.googlesource.com/go"
+	goHost                = "golang.org"
+	goDownloadBaseURL     = "https://dl.google.com/go"
+	goSourceGitURL        = "https://github.com/golang/go"
+	goSourceUpsteamGitURL = "https://go.googlesource.com/go"
 )
 
 var (
@@ -222,6 +223,9 @@ func installTip(clNumber string) error {
 		if err := git("clone", "--depth=1", goSourceGitURL, root); err != nil {
 			return fmt.Errorf("failed to clone git repository: %v", err)
 		}
+		if err := git("remote", "add", "upstream", goSourceUpsteamGitURL); err != nil {
+			return fmt.Errorf("failed to add upstream git repository: %v", err)
+		}
 	}
 
 	if clNumber != "" {
@@ -231,12 +235,13 @@ func installTip(clNumber string) error {
 			return fmt.Errorf("interrupted")
 		}
 
+		// CL is for googlesource, ls-remote against upstream
 		// ls-remote outputs a number of lines like:
 		// 2621ba2c60d05ec0b9ef37cd71e45047b004cead	refs/changes/37/227037/1
 		// 51f2af2be0878e1541d2769bd9d977a7e99db9ab	refs/changes/37/227037/2
 		// af1f3b008281c61c54a5d203ffb69334b7af007c	refs/changes/37/227037/3
 		// 6a10ebae05ce4b01cb93b73c47bef67c0f5c5f2a	refs/changes/37/227037/meta
-		refs, err := gitOutput("ls-remote")
+		refs, err := gitOutput("ls-remote", "upstream")
 		if err != nil {
 			return fmt.Errorf("failed to list remotes: %v", err)
 		}
@@ -255,7 +260,7 @@ func installTip(clNumber string) error {
 			}
 		}
 		logger.Printf("Fetching CL %v, Patch Set %v...", clNumber, patchSet)
-		if err := git("fetch", "origin", ref); err != nil {
+		if err := git("fetch", "upstream", ref); err != nil {
 			return fmt.Errorf("failed to fetch %s: %v", ref, err)
 		}
 	} else {
