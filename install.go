@@ -10,6 +10,7 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"os"
 	"os/exec"
 	"path"
@@ -24,18 +25,40 @@ import (
 )
 
 const (
-	currentVersionURL = "https://golang.org/VERSION?m=text"
-	downloadURLPrefix = "https://dl.google.com/go"
+	goHost            = "golang.org"
+	goDownloadBaseURL = "https://dl.google.com/go"
+	goSourceGitURL    = "https://go.googlesource.com/go"
+)
+
+var (
+	installCmdGoHostFlag string
+
+	installCmd = &cobra.Command{
+		Use:   "install [version]",
+		Short: `Install Go by providing a version. If empty, use the latest version.`,
+		Long: `Install Go by providing a version. If no version is provided, install the latest Go.
+The version can be any valid Go version available from https://golang.org/dl. If the
+version is 'tip', an optional change list (CL) number can be provided.`,
+		Example: `
+  goup install
+  goup install 1.15.2
+  goup install go1.15.2
+  goup install tip # Compile Go tip
+  goup install tip 1234 # 1234 is the CL number
+`,
+		RunE: runInstall,
+	}
 )
 
 func init() {
 	http.DefaultTransport = &userAgentTransport{http.DefaultTransport}
-}
 
-var installCmd = &cobra.Command{
-	Use:   "install [version]",
-	Short: `Install Go by providing a version (e.g. "1.15.2", or "tip"). If empty, use the latest version.`,
-	RunE:  runInstall,
+	gh := os.Getenv("GOUP_GO_HOST")
+	if gh == "" {
+		gh = goHost
+	}
+
+	installCmd.PersistentFlags().StringVar(&installCmdGoHostFlag, "host", gh, "host that is used to download Go. The GOUP_GO_HOST environment variable overrides this flag.")
 }
 
 func runInstall(cmd *cobra.Command, args []string) error {
@@ -82,7 +105,15 @@ func runInstall(cmd *cobra.Command, args []string) error {
 }
 
 func latestGoVersion() (string, error) {
-	resp, err := http.Get(currentVersionURL)
+	h, err := url.Parse(installCmdGoHostFlag)
+	if err != nil {
+		return "", err
+	}
+	if h.Scheme == "" {
+		h.Scheme = "https"
+	}
+
+	resp, err := http.Get(fmt.Sprintf("%s/VERSION?m=text", h.String()))
 	if err != nil {
 		return "", fmt.Errorf("Getting current Go version failed: %v", err)
 	}
@@ -188,7 +219,7 @@ func installTip(clNumber string) error {
 		if err := os.MkdirAll(root, 0755); err != nil {
 			return fmt.Errorf("failed to create repository: %v", err)
 		}
-		if err := git("clone", "--depth=1", "https://go.googlesource.com/go", root); err != nil {
+		if err := git("clone", "--depth=1", goSourceGitURL, root); err != nil {
 			return fmt.Errorf("failed to clone git repository: %v", err)
 		}
 	}
@@ -551,7 +582,7 @@ func versionArchiveURL(version string) string {
 		arch = "armv6l"
 	}
 
-	return fmt.Sprintf("%s/%s.%s-%s.%s", downloadURLPrefix, version, goos, arch, ext)
+	return fmt.Sprintf("%s/%s.%s-%s.%s", goDownloadBaseURL, version, goos, arch, ext)
 }
 
 const caseInsensitiveEnv = runtime.GOOS == "windows"
