@@ -10,8 +10,9 @@ import (
 
 var (
 	listCmd = &cobra.Command{
-		Use: "list [regexp]",
-		Short: `List Go versions matching a regexp filter. If no filter is provided,
+		Use:   "list [regexp]",
+		Short: `List Go versions for installation`,
+		Long: `List available Go versions matching a regexp filter for installation. If no filter is provided,
 list all available versions.`,
 		Example: `
   goup list
