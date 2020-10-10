@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	envFileContent = `export PATH="$HOME/.go/bin":"$HOME/.go/current/bin":$PATH`
+	envFileContent = `export PATH="$HOME/.go/bin:$HOME/.go/current/bin:$PATH"`
 	sourceContent  = `source "$HOME/.go/env"`
 
 	welcomeTmpl = `Welcome to Goup!
