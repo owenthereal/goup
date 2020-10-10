@@ -2,18 +2,7 @@
 
 set -e
 
-version() {
-  ver_file="version.go"
-  ver="$(git describe --tags HEAD 2>/dev/null || true)"
-
-  if [ -z "$ver" ]; then
-    ver="$(grep -w 'Version =' "$ver_file" | cut -d'"' -f2)"
-    sha="$(git rev-parse --short HEAD 2>/dev/null || true)"
-    [ -z "$sha" ] || ver="${ver}-g${sha}"
-  fi
-
-  echo "${ver#v}"
-}
+source $(dirname $(realpath $0))/util.sh
 
 OSARCH="darwin/amd64 linux/amd64 linux/386 linux/arm windows/amd64 windows/386 freebsd/amd64 freebsd/arm"
 
@@ -21,5 +10,5 @@ echo "Packaging goup $(version)"
 echo
 
 rm -rf release
-gox -osarch="$OSARCH" -output="release/{{.OS}}-{{.Arch}}"
+gox -osarch="$OSARCH" -output="release/{{.OS}}-{{.Arch}}" ./cmd/goup
 echo

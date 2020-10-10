@@ -2,11 +2,9 @@
 
 set -e
 
+source $(dirname $(realpath $0))/util.sh
+
 project_name="owenthereal/goup"
-
-version_file="version.go"
-version="$(grep -w 'Version =' "$version_file" | cut -d'"' -f2)"
-
 tag_name="v${version}"
 
 assets=()

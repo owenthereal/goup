@@ -1,4 +1,4 @@
-package main
+package commands
 
 import (
 	"os"
@@ -9,11 +9,6 @@ import (
 )
 
 var (
-	rootCmd = &cobra.Command{
-		Use:   "goup",
-		Short: "The Go installer",
-	}
-
 	homedir string
 	logger  *logrus.Logger
 )
@@ -26,6 +21,13 @@ func init() {
 	if err != nil {
 		logger.Fatal(err)
 	}
+}
+
+func NewCommand() *cobra.Command {
+	rootCmd := &cobra.Command{
+		Use:   "goup",
+		Short: "The Go installer",
+	}
 
 	rootCmd.AddCommand(installCmd)
 	rootCmd.AddCommand(removeCmd)
@@ -33,12 +35,8 @@ func init() {
 	rootCmd.AddCommand(showCmd)
 	rootCmd.AddCommand(listCmd)
 	rootCmd.AddCommand(versionCmd)
-}
 
-func main() {
-	if err := rootCmd.Execute(); err != nil {
-		logrus.Fatal(err)
-	}
+	return rootCmd
 }
 
 func goupBinDir() string {

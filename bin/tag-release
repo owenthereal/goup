@@ -2,7 +2,7 @@
 
 set -e
 
-version_file="version.go"
+source $(dirname $(realpath $0))/util.sh
 
 if git diff --exit-code >/dev/null -- "$version_file"; then
   echo "Update the version in $version_file and try again." >&2
