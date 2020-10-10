@@ -11,6 +11,8 @@ Besides, `goup` does not inject magic into your shell, like other version manage
 
 ## Installation
 
+### One-liner
+
 ```
 curl -sSf https://raw.githubusercontent.com/owenthereal/goup/master/install.sh | sh
 
@@ -22,6 +24,14 @@ Install by skipping the confirmation prompt, e.g., for automation:
 curl -sSf https://raw.githubusercontent.com/owenthereal/goup/master/install.sh | sh -s -- '--skip-prompt'
 
 ```
+
+### Manual
+
+If you want to install manually, there are the steps:
+
+* Download the latest `goup` from https://github.com/owenthereal/goup/releases
+* Drop the `goup` executable to your `PATH` and make it executable: `mv GOUP_BIN /usr/local/bin/goup && chmod +x /usr/local/bin/goup`
+* Add the Go bin directory to your shell startup script: `echo 'export PATH="$HOME/.go/current/bin:$PATH"' >> ~/.bashrc`
 
 ## Quick Start
 
