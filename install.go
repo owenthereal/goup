@@ -47,19 +47,23 @@ number can be provided.`,
   goup install tip # Compile Go tip
   goup install tip 1234 # 1234 is the CL number
 `,
-		RunE: runInstall,
+		PersistentPreRunE: preRunInstall,
+		RunE:              runInstall,
 	}
 )
 
 func init() {
-	http.DefaultTransport = &userAgentTransport{http.DefaultTransport}
-
 	gh := os.Getenv("GOUP_GO_HOST")
 	if gh == "" {
 		gh = goHost
 	}
 
 	installCmd.PersistentFlags().StringVar(&installCmdGoHostFlag, "host", gh, "host that is used to download Go. The GOUP_GO_HOST environment variable overrides this flag.")
+}
+
+func preRunInstall(cmd *cobra.Command, args []string) error {
+	http.DefaultTransport = &userAgentTransport{http.DefaultTransport}
+	return nil
 }
 
 func runInstall(cmd *cobra.Command, args []string) error {
