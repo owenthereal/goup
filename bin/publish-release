@@ -5,7 +5,7 @@ set -e
 source $(dirname $(realpath $0))/util.sh
 
 project_name="owenthereal/goup"
-tag_name="v${version}"
+tag_name="v$(version)"
 
 assets=()
 for filename in $(ls ./release); do
