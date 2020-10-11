@@ -98,10 +98,11 @@ $ GOUP_GO_HOST=golang.google.cn goup install # For Gophers in China, see https:/
 
 ## How it works
 
+* `install.sh` downloads the latest Goup release for your platform and appends Goup's bin directory (`$HOME/.go/bin`) & Go's bin directory (`$HOME/.go/current/bin`) to your PATH environment variable.
 * `goup install` downloads specified version of Go to`$HOME/.go/VERSION` and symlinks it to `$HOME/.go/current`.
 * `goup show` shows the activated Go version located at `$HOME/.go/current`.
-* `goup init` appends Goup's bin directory (`$HOME/.go/bin`) and Go's bin directory (`$HOME/.go/current/bin`) to your PATH environment variable.
-
+* `goup remove` removes the specified Go version.
+* `goup ls-ver` lists all available Go versions from https://golang.org/dl.
 
 ## License
 
