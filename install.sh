@@ -42,7 +42,19 @@ main() {
     exit 1
   fi
 
-  ignore "$_file" init "$@"< /dev/tty
+  local _is_tty=true
+  for f in "$@"
+  do
+    if [ "$f" = "--skip-prompt" ]; then
+      _is_tty=false
+    fi
+  done
+
+  if [ "$_is_tty" = true ]; then
+    ignore "$_file" init "$@"</dev/tty
+  else
+    ignore "$_file" init "$@"
+  fi
 
   local _retval=$?
   return "$_retval"
