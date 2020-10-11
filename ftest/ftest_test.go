@@ -68,6 +68,7 @@ func TestInstaller(t *testing.T) {
 		commands.GoupEnvFile(),
 		commands.GoupBinDir(),
 		commands.GoupCurrentDir(),
+		commands.GoupCurrentBinDir(),
 	}
 	for _, f := range filesShouldExist {
 		if _, err := os.Stat(f); os.IsNotExist(err) {

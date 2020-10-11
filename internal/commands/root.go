@@ -59,7 +59,7 @@ func GoupEnvFile() string {
 	return GoupDir("env")
 }
 
-func goupCurrentBinDir() string {
+func GoupCurrentBinDir() string {
 	return GoupDir("current", "bin")
 }
 

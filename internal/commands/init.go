@@ -75,7 +75,7 @@ func runInit(cmd *cobra.Command, args []string) error {
 	}{
 		GoupDir:         GoupDir(),
 		GoupBinDir:      GoupBinDir(),
-		CurrentGoBinDir: GoupCurrentDir(),
+		CurrentGoBinDir: GoupCurrentBinDir(),
 		ProfileFiles:    ProfileFiles,
 	}
 	if err := tmpl.Execute(os.Stdout, params); err != nil {
