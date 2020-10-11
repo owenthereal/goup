@@ -1,8 +1,10 @@
 package commands
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 
@@ -25,6 +27,11 @@ func runShow(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
+	if len(vers) == 0 {
+		showGoIfExist()
+		return nil
+	}
+
 	table := tablewriter.NewWriter(os.Stdout)
 	table.SetHeader([]string{"Version", "Active"})
 	table.SetBorders(tablewriter.Border{Left: true, Top: false, Right: true, Bottom: false})
@@ -42,6 +49,15 @@ func runShow(cmd *cobra.Command, args []string) error {
 	table.Render()
 
 	return nil
+}
+
+func showGoIfExist() {
+	goBin, err := exec.LookPath("go")
+	if err == nil {
+		fmt.Printf("No Go is installed by Goup. Using system Go %q.\n", goBin)
+	} else {
+		fmt.Println("No Go is installed by Goup.")
+	}
 }
 
 type goVer struct {
