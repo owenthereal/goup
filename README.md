@@ -15,14 +15,12 @@ Besides, `goup` does not inject magic into your shell, like other version manage
 
 ```
 curl -sSf https://raw.githubusercontent.com/owenthereal/goup/master/install.sh | sh
-
 ```
 
 Install by skipping the confirmation prompt, e.g., for automation:
 
 ```
 curl -sSf https://raw.githubusercontent.com/owenthereal/goup/master/install.sh | sh -s -- '--skip-prompt'
-
 ```
 
 ### Manual
