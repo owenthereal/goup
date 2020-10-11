@@ -10,7 +10,7 @@
 
 set -u
 
-GOUP_GH_LATEST_RELEASE_PREFIX="https://github.com/owenthereal/goup/releases/latest/download"
+GOUP_UPDATE_ROOT="${GOUP_UPDATE_ROOT:-https://github.com/owenthereal/goup/releases/latest/download}"
 
 
 main() {
@@ -29,7 +29,7 @@ main() {
       ;;
   esac
 
-  local _url="${GOUP_GH_LATEST_RELEASE_PREFIX}/${_arch}${_ext}"
+  local _url="${GOUP_UPDATE_ROOT}/${_arch}${_ext}"
   local _dir="$HOME/.go/bin"
   local _file="${_dir}/goup${_ext}"
 
@@ -42,7 +42,7 @@ main() {
     exit 1
   fi
 
-  ignore "$_file" init "$@"< /dev/tty
+  ignore "$_file" init "$@"
 
   local _retval=$?
   return "$_retval"

@@ -12,8 +12,8 @@ import (
 )
 
 const (
-	envFileContent = `export PATH="$HOME/.go/bin:$HOME/.go/current/bin:$PATH"`
-	sourceContent  = `source "$HOME/.go/env"`
+	GoupEnvFileContent       = `export PATH="$HOME/.go/bin:$HOME/.go/current/bin:$PATH"`
+	ProfileFileSourceContent = `source "$HOME/.go/env"`
 
 	welcomeTmpl = `Welcome to Goup!
 
@@ -62,12 +62,6 @@ func initCmd() *cobra.Command {
 }
 
 func runInit(cmd *cobra.Command, args []string) error {
-	profiles := []string{
-		filepath.Join(homedir, ".profile"),
-		filepath.Join(homedir, ".zprofile"),
-		filepath.Join(homedir, ".bash_profile"),
-	}
-
 	tmpl, err := template.New("").Parse(welcomeTmpl)
 	if err != nil {
 		return err
@@ -79,10 +73,10 @@ func runInit(cmd *cobra.Command, args []string) error {
 		CurrentGoBinDir string
 		ProfileFiles    []string
 	}{
-		GoupDir:         goupDir(),
-		GoupBinDir:      goupBinDir(),
-		CurrentGoBinDir: currentGoBinDir(),
-		ProfileFiles:    profiles,
+		GoupDir:         GoupDir(),
+		GoupBinDir:      GoupBinDir(),
+		CurrentGoBinDir: GoupCurrentDir(),
+		ProfileFiles:    ProfileFiles,
 	}
 	if err := tmpl.Execute(os.Stdout, params); err != nil {
 		return err
@@ -100,7 +94,7 @@ func runInit(cmd *cobra.Command, args []string) error {
 	// add a line break
 	fmt.Println("")
 
-	ef := envFile()
+	ef := GoupEnvFile()
 	if err := os.MkdirAll(filepath.Dir(ef), 0755); err != nil {
 		return err
 	}
@@ -108,11 +102,11 @@ func runInit(cmd *cobra.Command, args []string) error {
 	// ignore error, similar to rm -f
 	os.Remove(ef)
 
-	if err := ioutil.WriteFile(ef, []byte(envFileContent), 0664); err != nil {
+	if err := ioutil.WriteFile(ef, []byte(GoupEnvFileContent), 0664); err != nil {
 		return err
 	}
 
-	if err := appendSourceToProfiles(profiles); err != nil {
+	if err := appendSourceToProfiles(ProfileFiles); err != nil {
 		return err
 	}
 
@@ -147,7 +141,7 @@ func prompt(query, defaultAnswer string) (string, error) {
 
 func appendSourceToProfiles(profiles []string) error {
 	for _, profile := range profiles {
-		if err := appendToFile(profile, sourceContent); err != nil {
+		if err := appendToFile(profile, ProfileFileSourceContent); err != nil {
 			return err
 		}
 	}
