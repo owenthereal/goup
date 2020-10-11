@@ -1,13 +1,24 @@
 # Goup
 
-`goup` (pronounced Go Up) is an elegant Go installer.
+`goup` (pronounced Go Up) is an elegant Go version manager.
 
 It is notorious that an operating system's package manager takes time to update Go to the latest version, particularly on Linux distros.
-`goup` makes Go installation and version management easy.
-You can download the latest version (or any version) of Go with one command, without tying yourself to the availability of Go in your package manager.
-Besides, `goup` does not inject magic into your shell, like other version managers: it only exports Goup's bin directory and Go's bin directory to your PATH environment.
+At the time of this writing in October 2020, Fedora 32's Go version from [dnf](https://fedoraproject.org/wiki/DNF) is 1.14.9, while the latest Go version is 1.15.2.
 
-`goup` is written in Go. It is heavily inspired by [Rustup](https://rustup.rs/), [golang/dl](https://github.com/golang/dl) and [getgo](https://github.com/golang/tools/tree/master/cmd/getgo).
+There are a bunch of solutions to install Go or manage Go versions outside of a package manager:
+[golang/dl](https://github.com/golang/dl), [getgo](https://github.com/golang/tools/tree/master/cmd/getgo), [gvm](https://github.com/moovweb/gvm), [goenv](https://github.com/syndbg/goenv), to name a few.
+All of them either do not work well on all Linux distros (I ran into errors with `gvm` and `goenv` on Fedora) or do not provide the developer experience that I like (`golang/dl` requires a Go compiler to pre-exist; `getgo` can only install the latest Go)
+
+I want a Go manager that:
+
+* Has a minimum prerequisite to install, e.g., does not need a Go compiler to pre-exist.
+* Is installed with a one-liner.
+* Runs well on all operating systems (at least runs well on *uix as a start).
+* Installs any version of Go (any version from [golang.org/dl](https://golang.org/dl) or tip) and switches to it.
+* Does not inject magic into your shell.
+* Is written in Go.
+
+`goup` is an attempt to fulfill the above features and is heavily inspired by [Rustup](https://rustup.rs/), [golang/dl](https://github.com/golang/dl) and [getgo](https://github.com/golang/tools/tree/master/cmd/getgo).
 
 ## Installation
 
