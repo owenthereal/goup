@@ -9,7 +9,7 @@ There are a bunch of solutions to install Go or manage Go versions outside of a 
 [golang/dl](https://github.com/golang/dl), [getgo](https://github.com/golang/tools/tree/master/cmd/getgo), [gvm](https://github.com/moovweb/gvm), [goenv](https://github.com/syndbg/goenv), to name a few.
 All of them either do not work well on all Linux distros (I ran into errors with `gvm` and `goenv` on Fedora) or do not provide the developer experience that I like (`golang/dl` requires a Go compiler to pre-exist; `getgo` can only install the latest Go)
 
-I want a Go manager that:
+I want a Go version manager that:
 
 * Has a minimum prerequisite to install, e.g., does not need a Go compiler to pre-exist.
 * Is installed with a one-liner.
