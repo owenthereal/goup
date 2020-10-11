@@ -50,7 +50,7 @@ type goVer struct {
 }
 
 func listGoVers() ([]goVer, error) {
-	files, err := ioutil.ReadDir(goupDir())
+	files, err := ioutil.ReadDir(GoupDir())
 	if err != nil {
 		return nil, err
 	}
@@ -74,7 +74,7 @@ func listGoVers() ([]goVer, error) {
 }
 
 func currentGoVersion() (string, error) {
-	current := currentGoRootDir()
+	current := GoupCurrentDir()
 	goroot, err := os.Readlink(current)
 	if err != nil {
 		return "", err

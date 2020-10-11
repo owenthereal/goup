@@ -28,5 +28,5 @@ func runRemove(cmd *cobra.Command, args []string) error {
 
 	}
 
-	return os.RemoveAll(goupDir(ver))
+	return os.RemoveAll(GoupDir(ver))
 }

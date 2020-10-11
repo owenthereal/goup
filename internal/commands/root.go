@@ -11,6 +11,8 @@ import (
 var (
 	homedir string
 	logger  *logrus.Logger
+
+	ProfileFiles []string
 )
 
 func init() {
@@ -20,6 +22,12 @@ func init() {
 	homedir, err = os.UserHomeDir()
 	if err != nil {
 		logger.Fatal(err)
+	}
+
+	ProfileFiles = []string{
+		filepath.Join(homedir, ".profile"),
+		filepath.Join(homedir, ".zprofile"),
+		filepath.Join(homedir, ".bash_profile"),
 	}
 }
 
@@ -39,27 +47,27 @@ func NewCommand() *cobra.Command {
 	return rootCmd
 }
 
-func goupBinDir() string {
-	return goupDir("bin")
+func GoupBinDir() string {
+	return GoupDir("bin")
 }
 
-func currentGoRootDir() string {
-	return goupDir("current")
+func GoupCurrentDir() string {
+	return GoupDir("current")
 }
 
-func currentGoBinDir() string {
-	return goupDir("current", "bin")
+func GoupEnvFile() string {
+	return GoupDir("env")
 }
 
-func versionGoRootDir(ver string) string {
-	return goupDir(ver)
+func GoupCurrentBinDir() string {
+	return GoupDir("current", "bin")
 }
 
-func envFile() string {
-	return goupDir("env")
+func goupVersionDir(ver string) string {
+	return GoupDir(ver)
 }
 
-func goupDir(paths ...string) string {
+func GoupDir(paths ...string) string {
 	elem := []string{homedir, ".go"}
 	elem = append(elem, paths...)
 

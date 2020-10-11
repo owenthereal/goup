@@ -138,8 +138,8 @@ func latestGoVersion() (string, error) {
 }
 
 func symlink(ver string) error {
-	current := currentGoRootDir()
-	version := versionGoRootDir(ver)
+	current := GoupCurrentDir()
+	version := goupVersionDir(ver)
 
 	// ignore error, similar to rm -f
 	os.Remove(current)
@@ -148,7 +148,7 @@ func symlink(ver string) error {
 }
 
 func install(version string) error {
-	targetDir := versionGoRootDir(version)
+	targetDir := goupVersionDir(version)
 
 	if _, err := os.Stat(filepath.Join(targetDir, unpackedOkay)); err == nil {
 		logger.Printf("%s: already downloaded in %v", version, targetDir)
@@ -206,7 +206,7 @@ func install(version string) error {
 }
 
 func installTip(clNumber string) error {
-	root := versionGoRootDir("gotip")
+	root := goupVersionDir("gotip")
 
 	git := func(args ...string) error {
 		cmd := exec.Command("git", args...)
