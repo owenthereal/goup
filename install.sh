@@ -42,7 +42,7 @@ main() {
     exit 1
   fi
 
-  ignore "$_file" init "$@"
+  ignore "$_file" init "$@"< /dev/tty
 
   local _retval=$?
   return "$_retval"
