@@ -1,11 +1,13 @@
 package commands
 
 import (
-	"os"
-	"path/filepath"
-
+	"fmt"
+	"github.com/owenthereal/goup/internal/color"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+	"github.com/thewolfnl/go-multiplechoice"
+	"os"
+	"path/filepath"
 )
 
 var (
@@ -35,6 +37,7 @@ func NewCommand() *cobra.Command {
 	rootCmd := &cobra.Command{
 		Use:   "goup",
 		Short: "The Go installer",
+		RunE:  choiceVersion,
 	}
 
 	rootCmd.AddCommand(installCmd())
@@ -72,4 +75,41 @@ func GoupDir(paths ...string) string {
 	elem = append(elem, paths...)
 
 	return filepath.Join(elem...)
+}
+
+func choiceVersion(cmd *cobra.Command, args []string) error {
+	vers, err := listGoVers()
+	if err != nil {
+		return err
+	}
+
+	if len(vers) == 0 {
+		showGoIfExist()
+		return nil
+	}
+
+	var curVer string
+
+	var options = make([]string, 0, len(vers))
+	for _, v := range vers {
+		options = append(options, v.Ver)
+		if v.Current {
+			curVer = v.Ver
+		}
+	}
+
+	// choice version
+	ver := MultipleChoice.Selection(fmt.Sprintf("CurVer %s \nUse up/down arrow keys to select a version, return key to install \n", color.Str2Cyan(curVer)), options[:])
+
+	fmt.Println()
+	if ver == curVer {
+		fmt.Println(color.Str2Red(fmt.Sprintf("installed：go v%s \n", ver)))
+		return nil
+	}
+
+	if err := symlink("go" + ver); err != nil {
+		return err
+	}
+	fmt.Println(color.Str2Red(fmt.Sprintf("installed：go v%s \n", ver)))
+	return nil
 }

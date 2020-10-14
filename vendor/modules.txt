@@ -1,5 +1,8 @@
 # github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e
 github.com/chzyer/readline
+# github.com/gosuri/uilive v0.0.4
+## explicit
+github.com/gosuri/uilive
 # github.com/inconshreveable/mousetrap v1.0.0
 github.com/inconshreveable/mousetrap
 # github.com/juju/ansiterm v0.0.0-20180109212912-720a0952cc2a
@@ -23,6 +26,10 @@ github.com/mattn/go-runewidth
 # github.com/olekukonko/tablewriter v0.0.4
 ## explicit
 github.com/olekukonko/tablewriter
+# github.com/pkg/term v1.1.0
+## explicit
+github.com/pkg/term
+github.com/pkg/term/termios
 # github.com/sirupsen/logrus v1.2.0
 ## explicit
 github.com/sirupsen/logrus
@@ -32,8 +39,12 @@ github.com/spf13/cobra
 # github.com/spf13/pflag v1.0.5
 ## explicit
 github.com/spf13/pflag
+# github.com/thewolfnl/go-multiplechoice v0.0.0-20180703110455-68e9def756cc
+## explicit
+github.com/thewolfnl/go-multiplechoice
 # golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2
 golang.org/x/crypto/ssh/terminal
-# golang.org/x/sys v0.0.0-20190215142949-d0b11bdaac8a
+# golang.org/x/sys v0.0.0-20200909081042-eff7692f9009
+golang.org/x/sys/internal/unsafeheader
 golang.org/x/sys/unix
 golang.org/x/sys/windows
