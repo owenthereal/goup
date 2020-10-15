@@ -21,6 +21,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
 )
 
@@ -235,9 +236,12 @@ func installTip(clNumber string) error {
 	}
 
 	if clNumber != "" {
-		fmt.Fprintf(os.Stderr, "This will download and execute code from golang.org/cl/%s, continue? [y/n] ", clNumber)
-		var answer string
-		if fmt.Scanln(&answer); answer != "y" {
+		prompt := promptui.Prompt{
+			Label:     fmt.Sprintf("This will download and execute code from golang.org/cl/%s, continue", clNumber),
+			IsConfirm: true,
+		}
+
+		if _, err := prompt.Run(); err != nil {
 			return fmt.Errorf("interrupted")
 		}
 
