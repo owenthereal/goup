@@ -93,7 +93,7 @@ func runInit(cmd *cobra.Command, args []string) error {
 		}
 
 		if _, err := prompt.Run(); err != nil {
-			return fmt.Errorf("installation cancelled")
+			return fmt.Errorf("interrupted")
 		}
 
 	}
