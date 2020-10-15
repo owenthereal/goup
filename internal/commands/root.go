@@ -35,7 +35,7 @@ func NewCommand() *cobra.Command {
 	rootCmd := &cobra.Command{
 		Use:   "goup",
 		Short: "The Go installer",
-		RunE:  choiceVersion,
+		RunE:  runChooseVersion,
 	}
 
 	rootCmd.AddCommand(installCmd())
@@ -75,7 +75,7 @@ func GoupDir(paths ...string) string {
 	return filepath.Join(elem...)
 }
 
-func choiceVersion(cmd *cobra.Command, args []string) error {
+func runChooseVersion(cmd *cobra.Command, args []string) error {
 	vers, err := listGoVers()
 	if err != nil {
 		return err
@@ -86,10 +86,13 @@ func choiceVersion(cmd *cobra.Command, args []string) error {
 		return nil
 	}
 
-	var curVer string
-	var pos int
+	var (
+		curVer string
+		pos    int
+	)
 
 	var items = make([]string, 0, len(vers))
+
 	for idx, v := range vers {
 		items = append(items, v.Ver)
 		if v.Current {
@@ -99,7 +102,7 @@ func choiceVersion(cmd *cobra.Command, args []string) error {
 	}
 
 	prompt := promptui.Select{
-		Label:     "select a version",
+		Label:     "Select a version",
 		Items:     items,
 		CursorPos: pos,
 	}
