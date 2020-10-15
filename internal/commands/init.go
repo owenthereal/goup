@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"text/template"
 
+	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
 )
 
@@ -82,17 +83,20 @@ func runInit(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	answer, err := prompt("\nWould you like to proceed with the installation?", "yes")
-	if err != nil {
-		return err
-	}
+	if !initCmdSkipPromptFlag {
+		// Add a line break
+		fmt.Println("")
 
-	if answer != "yes" {
-		return nil
-	}
+		prompt := promptui.Prompt{
+			Label:     "Would you like to proceed with the installation",
+			IsConfirm: true,
+		}
 
-	// add a line break
-	fmt.Println("")
+		if _, err := prompt.Run(); err != nil {
+			return fmt.Errorf("installation cancelled")
+		}
+
+	}
 
 	ef := GoupEnvFile()
 	if err := os.MkdirAll(filepath.Dir(ef), 0755); err != nil {
@@ -111,32 +115,15 @@ func runInit(cmd *cobra.Command, args []string) error {
 	}
 
 	if !initCmdSkipInstallFlag {
+		// Add a line break
+		fmt.Println("")
+
 		if err := runInstall(cmd, args); err != nil {
 			return err
 		}
 	}
 
 	return nil
-}
-
-func prompt(query, defaultAnswer string) (string, error) {
-	if initCmdSkipPromptFlag {
-		return defaultAnswer, nil
-	}
-
-	fmt.Printf("%s [%s]: ", query, defaultAnswer)
-
-	s := bufio.NewScanner(os.Stdin)
-	if !s.Scan() {
-		return "", s.Err()
-	}
-
-	answer := s.Text()
-	if answer == "" {
-		answer = defaultAnswer
-	}
-
-	return answer, nil
 }
 
 func appendSourceToProfiles(profiles []string) error {
