@@ -4,7 +4,7 @@ go 1.15
 
 require (
 	github.com/gosuri/uilive v0.0.4 // indirect
-	github.com/mattn/go-isatty v0.0.12 // indirect
+	github.com/manifoldco/promptui v0.8.0
 	github.com/olekukonko/tablewriter v0.0.4
 	github.com/pkg/term v1.1.0 // indirect
 	github.com/sirupsen/logrus v1.2.0
