@@ -1,11 +1,9 @@
 package commands
 
 import (
-	"fmt"
-	"github.com/owenthereal/goup/internal/color"
+	"github.com/manifoldco/promptui"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/thewolfnl/go-multiplechoice"
 	"os"
 	"path/filepath"
 )
@@ -89,27 +87,34 @@ func choiceVersion(cmd *cobra.Command, args []string) error {
 	}
 
 	var curVer string
+	var pos int
 
-	var options = make([]string, 0, len(vers))
-	for _, v := range vers {
-		options = append(options, v.Ver)
+	var items = make([]string, 0, len(vers))
+	for idx, v := range vers {
+		items = append(items, v.Ver)
 		if v.Current {
 			curVer = v.Ver
+			pos = idx
 		}
 	}
 
-	// choice version
-	ver := MultipleChoice.Selection(fmt.Sprintf("CurVer %s \nUse up/down arrow keys to select a version, return key to install \n", color.Str2Cyan(curVer)), options[:])
+	prompt := promptui.Select{
+		Label:     "select a version",
+		Items:     items,
+		CursorPos: pos,
+	}
 
-	fmt.Println()
+	_, ver, err := prompt.Run()
+	if err != nil {
+		return err
+	}
+
 	if ver == curVer {
-		fmt.Println(color.Str2Red(fmt.Sprintf("installed：go v%s \n", ver)))
 		return nil
 	}
 
 	if err := symlink("go" + ver); err != nil {
 		return err
 	}
-	fmt.Println(color.Str2Red(fmt.Sprintf("installed：go v%s \n", ver)))
 	return nil
 }
