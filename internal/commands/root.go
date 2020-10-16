@@ -14,6 +14,8 @@ var (
 	logger  *logrus.Logger
 
 	ProfileFiles []string
+
+	rootCmdVerboseFlag bool
 )
 
 func init() {
@@ -34,10 +36,13 @@ func init() {
 
 func NewCommand() *cobra.Command {
 	rootCmd := &cobra.Command{
-		Use:   "goup",
-		Short: "The Go installer",
-		RunE:  runChooseVersion,
+		Use:               "goup",
+		Short:             "The Go installer",
+		PersistentPreRunE: preRunRoot,
+		RunE:              runChooseVersion,
 	}
+
+	rootCmd.PersistentFlags().BoolVarP(&rootCmdVerboseFlag, "verbose", "v", false, "Verbose")
 
 	rootCmd.AddCommand(installCmd())
 	rootCmd.AddCommand(removeCmd())
@@ -45,6 +50,7 @@ func NewCommand() *cobra.Command {
 	rootCmd.AddCommand(showCmd())
 	rootCmd.AddCommand(listCmd())
 	rootCmd.AddCommand(versionCmd())
+	rootCmd.AddCommand(upgradeCmd())
 
 	return rootCmd
 }
@@ -74,6 +80,14 @@ func GoupDir(paths ...string) string {
 	elem = append(elem, paths...)
 
 	return filepath.Join(elem...)
+}
+
+func preRunRoot(cmd *cobra.Command, args []string) error {
+	if rootCmdVerboseFlag {
+		logger.SetLevel(logrus.DebugLevel)
+	}
+
+	return nil
 }
 
 func runChooseVersion(cmd *cobra.Command, args []string) error {
