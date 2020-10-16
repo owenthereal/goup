@@ -120,5 +120,8 @@ func runChooseVersion(cmd *cobra.Command, args []string) error {
 	if err := symlink("go" + ver); err != nil {
 		return err
 	}
+
+	logger.Printf("Default Go is set to '%s'", ver)
+
 	return nil
 }
