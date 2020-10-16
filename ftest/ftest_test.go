@@ -51,42 +51,109 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
-func TestInstaller(t *testing.T) {
-	cmd := exec.Command("sh", flagInstallPath, "--skip-prompt")
-	cmd.Env = append(os.Environ(), "GOUP_UPDATE_ROOT=file://"+goupBinDir)
+func TestGoup(t *testing.T) {
+	t.Run("installer", func(t *testing.T) {
+		cmd := exec.Command("sh", flagInstallPath, "--skip-prompt")
+		cmd.Env = append(os.Environ(), "GOUP_UPDATE_ROOT=file://"+goupBinDir)
+		execCmd(t, cmd)
+
+		// check file exists
+		filesShouldExist := []string{
+			commands.GoupDir(),
+			commands.GoupEnvFile(),
+			commands.GoupBinDir(),
+			commands.GoupCurrentDir(),
+			commands.GoupCurrentBinDir(),
+		}
+		for _, f := range filesShouldExist {
+			if _, err := os.Stat(f); os.IsNotExist(err) {
+				t.Error(err)
+			}
+		}
+
+		// check profiles
+		for _, f := range commands.ProfileFiles {
+			ok, err := fileContains(f, commands.ProfileFileSourceContent)
+			if err != nil {
+				t.Error(err)
+			}
+
+			if !ok {
+				t.Errorf("%s does not source goup", f)
+			}
+		}
+	})
+
+	goupBin := filepath.Join(commands.GoupBinDir(), "goup")
+
+	t.Run("goup install", func(t *testing.T) {
+		cmd := exec.Command(goupBin, "install", "1.15.2")
+		execCmd(t, cmd)
+	})
+
+	t.Run("goup show", func(t *testing.T) {
+		cmd := exec.Command(goupBin, "show")
+		out := execCmd(t, cmd)
+
+		if want, got := []byte("1.15.2"), out; !bytes.Contains(got, want) {
+			t.Fatalf("goup show failed: want=%s got=%s", want, out)
+		}
+	})
+
+	t.Run("goup ls-ver", func(t *testing.T) {
+		cmd := exec.Command(goupBin, "ls-ver")
+		out := execCmd(t, cmd)
+
+		if want, got := []byte("1.15.2"), out; !bytes.Contains(got, want) {
+			t.Fatalf("goup ls-ver failed: want=%s got=%s", want, out)
+		}
+	})
+
+	t.Run("goup remove", func(t *testing.T) {
+		cmd := exec.Command(goupBin, "remove", "1.15.2")
+		execCmd(t, cmd)
+	})
+
+	t.Run("goup show again", func(t *testing.T) {
+		cmd := exec.Command(goupBin, "show")
+		out := execCmd(t, cmd)
+
+		if want, got := []byte("1.15.2"), out; bytes.Contains(got, want) {
+			t.Fatalf("goup show again failed: want=%s got=%s", want, out)
+		}
+	})
+
+	t.Run("goup upgrade", func(t *testing.T) {
+		cmd := exec.Command(goupBin, "upgrade", "0.1.4")
+		cmd.Env = append(os.Environ(), fmt.Sprintf("PATH=%s:$PATH", filepath.Dir(goupBin)))
+		out, err := cmd.CombinedOutput()
+		if err != nil {
+			t.Fatalf("goup upgrade failed: %s: %s", out, err)
+		}
+		t.Logf("%s", out)
+	})
+
+	t.Run("goup version", func(t *testing.T) {
+		cmd := exec.Command(goupBin, "version")
+		out := execCmd(t, cmd)
+
+		if want, got := []byte("0.1.4"), out; !bytes.Contains(got, want) {
+			t.Fatalf("goup version failed: want=%s got=%s", want, out)
+		}
+	})
+
+}
+
+func execCmd(t *testing.T, cmd *exec.Cmd) []byte {
+	t.Helper()
 
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		t.Fatalf("%s: %s", out, err)
 	}
+	t.Logf("%s", out)
 
-	fmt.Println(string(out))
-
-	// check file exists
-	filesShouldExist := []string{
-		commands.GoupDir(),
-		commands.GoupEnvFile(),
-		commands.GoupBinDir(),
-		commands.GoupCurrentDir(),
-		commands.GoupCurrentBinDir(),
-	}
-	for _, f := range filesShouldExist {
-		if _, err := os.Stat(f); os.IsNotExist(err) {
-			t.Error(err)
-		}
-	}
-
-	// check profiles
-	for _, f := range commands.ProfileFiles {
-		ok, err := fileContains(f, commands.ProfileFileSourceContent)
-		if err != nil {
-			t.Error(err)
-		}
-
-		if !ok {
-			t.Errorf("%s does not source goup", f)
-		}
-	}
+	return out
 }
 
 func fileContains(f string, s string) (bool, error) {
