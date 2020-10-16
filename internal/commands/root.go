@@ -88,8 +88,7 @@ func runChooseVersion(cmd *cobra.Command, args []string) error {
 	}
 
 	var (
-		curVer string
-		pos    int
+		pos int
 	)
 
 	var items = make([]string, 0, len(vers))
@@ -97,7 +96,6 @@ func runChooseVersion(cmd *cobra.Command, args []string) error {
 	for idx, v := range vers {
 		items = append(items, v.Ver)
 		if v.Current {
-			curVer = v.Ver
 			pos = idx
 		}
 	}
@@ -111,10 +109,6 @@ func runChooseVersion(cmd *cobra.Command, args []string) error {
 	_, ver, err := prompt.Run()
 	if err != nil {
 		return err
-	}
-
-	if ver == curVer {
-		return nil
 	}
 
 	if err := symlink("go" + ver); err != nil {
