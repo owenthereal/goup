@@ -75,8 +75,8 @@ func goupVersionDir(ver string) string {
 	return GoupDir(ver)
 }
 
-func goupVersionBinGoExec(verDir string) string {
-	return GoupDir(verDir, "bin", "go")
+func goupVersionBinGoExec(ver string) string {
+	return GoupDir(ver, "bin", "go")
 }
 
 func GoupDir(paths ...string) string {
