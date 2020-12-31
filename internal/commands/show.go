@@ -79,6 +79,10 @@ func listGoVers() ([]goVer, error) {
 	var vers []goVer
 	for _, file := range files {
 		if strings.HasPrefix(file.Name(), "go") {
+			err := exec.Command(goupVersionBinGoExec(file.Name()), "version").Run()
+			if err != nil {
+				continue
+			}
 			vers = append(vers, goVer{
 				Ver:     strings.TrimPrefix(file.Name(), "go"),
 				Current: current == file.Name(),

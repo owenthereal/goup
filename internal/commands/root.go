@@ -75,6 +75,10 @@ func goupVersionDir(ver string) string {
 	return GoupDir(ver)
 }
 
+func goupVersionBinGoExec(verDir string) string {
+	return GoupDir(verDir, "bin", "go")
+}
+
 func GoupDir(paths ...string) string {
 	elem := []string{homedir, ".go"}
 	elem = append(elem, paths...)
