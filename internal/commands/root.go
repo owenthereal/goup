@@ -3,6 +3,7 @@ package commands
 import (
 	"os"
 	"path/filepath"
+	"runtime"
 
 	"github.com/manifoldco/promptui"
 	"github.com/sirupsen/logrus"
@@ -76,7 +77,7 @@ func goupVersionDir(ver string) string {
 }
 
 func goupVersionBinGoExec(ver string) string {
-	return GoupDir(ver, "bin", "go")
+	return GoupDir(ver, "bin", "go"+exe())
 }
 
 func GoupDir(paths ...string) string {
@@ -136,4 +137,11 @@ func runChooseVersion(cmd *cobra.Command, args []string) error {
 	logger.Printf("Default Go is set to '%s'", ver)
 
 	return nil
+}
+
+func exe() string {
+	if runtime.GOOS == "windows" {
+		return ".exe"
+	}
+	return ""
 }
