@@ -585,19 +585,26 @@ func getOS() string {
 
 // versionArchiveURL returns the zip or tar.gz URL of the given Go version.
 func versionArchiveURL(version string) string {
-	goos := getOS()
+	goos, ext, arch := getFileNameComponents(version)
+	return fmt.Sprintf("%s/%s.%s-%s.%s", goDownloadBaseURL, version, goos, arch, ext)
+}
 
+func getFileNameComponents(version string) (string, string, string) {
+	goos := getOS()
+	arch := runtime.GOARCH
+	if runtime.GOARCH == "arm" {
+		if goos == "linux" {
+			arch = "armv6l"
+		}
+		if goos == "darwin" {
+			arch = "arm64"
+		}
+	}
 	ext := "tar.gz"
 	if goos == "windows" {
 		ext = "zip"
 	}
-
-	arch := runtime.GOARCH
-	if goos == "linux" && runtime.GOARCH == "arm" {
-		arch = "armv6l"
-	}
-
-	return fmt.Sprintf("%s/%s.%s-%s.%s", goDownloadBaseURL, version, goos, arch, ext)
+	return goos, ext, arch
 }
 
 // unpackedOkay is a sentinel zero-byte file to indicate that the Go
