@@ -48,7 +48,7 @@ func listGoVersions(re string) ([]string, error) {
 
 	}
 
-	cmd := exec.Command("git", "ls-remote", "--tags", "https://github.com/golang/go")
+	cmd := exec.Command("git", "ls-remote", "--sort=version:refname", "--tags", "https://github.com/golang/go")
 	refs, err := cmd.Output()
 	if err != nil {
 		return nil, err
