@@ -23,7 +23,7 @@ import (
 
 func upgradeCmd() *cobra.Command {
 	return &cobra.Command{
-		Use:   "upgrade [version]",
+		Use:   "upgrade [VERSION]",
 		Short: "Upgrade goup",
 		Long:  "Upgrade goup by providing a version. If no version is provided, upgrade to the latest goup.",
 		RunE:  runUpgrade,

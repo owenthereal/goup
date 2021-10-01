@@ -10,10 +10,14 @@ import (
 
 func removeCmd() *cobra.Command {
 	return &cobra.Command{
-		Use:   "remove <version>",
+		Use:   "remove <VERSION>...",
 		Short: "Remove Go with a version",
 		Long:  "Remove Go by providing a version.",
-		RunE:  runRemove,
+		Example: `
+  goup remove 1.15.2
+  goup remove 1.16.1 1.16.2
+`,
+		RunE: runRemove,
 	}
 }
 
@@ -22,11 +26,18 @@ func runRemove(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("No version is specified")
 	}
 
-	ver := args[0]
-	if !strings.HasPrefix(ver, "go") {
-		ver = "go" + ver
+	for _, ver := range args {
+		logger.Printf("Removing %s", ver)
 
+		if !strings.HasPrefix(ver, "go") {
+			ver = "go" + ver
+
+		}
+
+		if err := os.RemoveAll(GoupDir(ver)); err != nil {
+			return err
+		}
 	}
 
-	return os.RemoveAll(GoupDir(ver))
+	return nil
 }

@@ -38,7 +38,7 @@ var (
 
 func installCmd() *cobra.Command {
 	installCmd := &cobra.Command{
-		Use:   "install [version]",
+		Use:   "install [VERSION]",
 		Short: `Install Go with a version`,
 		Long: `Install Go by providing a version. If no version is provided, install
 the latest Go. If the version is 'tip', an optional change list (CL)
