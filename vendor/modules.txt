@@ -1,15 +1,16 @@
 # github.com/apex/log v1.9.0
-## explicit
+## explicit; go 1.12
 github.com/apex/log
 # github.com/bradfitz/iter v0.0.0-20191230175014-e8f45d346db8
-## explicit
+## explicit; go 1.11
 # github.com/c4milo/unpackit v0.0.0-20170704181138-4ed373e9ef1c
 ## explicit
 github.com/c4milo/unpackit
 # github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e
+## explicit
 github.com/chzyer/readline
 # github.com/dsnet/compress v0.0.1
-## explicit
+## explicit; go 1.9
 github.com/dsnet/compress
 github.com/dsnet/compress/bzip2
 github.com/dsnet/compress/bzip2/internal/sais
@@ -23,57 +24,67 @@ github.com/google/go-github/github
 ## explicit
 github.com/google/go-querystring/query
 # github.com/gosuri/uilive v0.0.4
-## explicit
+## explicit; go 1.10
 github.com/gosuri/uilive
 # github.com/gosuri/uiprogress v0.0.1
 ## explicit
 github.com/gosuri/uiprogress
 github.com/gosuri/uiprogress/util/strutil
 # github.com/hooklift/assert v0.1.0
-## explicit
+## explicit; go 1.14
 # github.com/inconshreveable/mousetrap v1.0.0
+## explicit
 github.com/inconshreveable/mousetrap
 # github.com/juju/ansiterm v0.0.0-20180109212912-720a0952cc2a
+## explicit
 github.com/juju/ansiterm
 github.com/juju/ansiterm/tabwriter
 # github.com/kierdavis/ansi v0.0.0-20180105022324-90d93b0fcae2
 ## explicit
 github.com/kierdavis/ansi
 # github.com/klauspost/compress v1.4.1
+## explicit
 github.com/klauspost/compress/flate
 # github.com/klauspost/cpuid v1.2.0
+## explicit
 github.com/klauspost/cpuid
 # github.com/klauspost/pgzip v1.2.5
 ## explicit
 github.com/klauspost/pgzip
 # github.com/konsorten/go-windows-terminal-sequences v1.0.1
+## explicit
 github.com/konsorten/go-windows-terminal-sequences
 # github.com/lunixbochs/vtclean v0.0.0-20180621232353-2d01aacdc34a
+## explicit
 github.com/lunixbochs/vtclean
 # github.com/manifoldco/promptui v0.8.0
-## explicit
+## explicit; go 1.12
 github.com/manifoldco/promptui
 github.com/manifoldco/promptui/list
 github.com/manifoldco/promptui/screenbuf
 # github.com/mattn/go-colorable v0.1.2
+## explicit
 github.com/mattn/go-colorable
 # github.com/mattn/go-isatty v0.0.8
+## explicit
 github.com/mattn/go-isatty
 # github.com/mattn/go-runewidth v0.0.7
+## explicit; go 1.9
 github.com/mattn/go-runewidth
 # github.com/olekukonko/tablewriter v0.0.4
-## explicit
+## explicit; go 1.12
 github.com/olekukonko/tablewriter
 # github.com/pkg/errors v0.8.1
+## explicit
 github.com/pkg/errors
 # github.com/sirupsen/logrus v1.2.0
 ## explicit
 github.com/sirupsen/logrus
 # github.com/spf13/cobra v1.0.0
-## explicit
+## explicit; go 1.12
 github.com/spf13/cobra
 # github.com/spf13/pflag v1.0.5
-## explicit
+## explicit; go 1.12
 github.com/spf13/pflag
 # github.com/tj/go-update v2.2.4+incompatible
 ## explicit
@@ -81,13 +92,15 @@ github.com/tj/go-update
 github.com/tj/go-update/progress
 github.com/tj/go-update/stores/github
 # github.com/ulikunitz/xz v0.5.8
-## explicit
+## explicit; go 1.12
 github.com/ulikunitz/xz
 github.com/ulikunitz/xz/internal/hash
 github.com/ulikunitz/xz/internal/xlog
 github.com/ulikunitz/xz/lzma
 # golang.org/x/crypto v0.0.0-20190426145343-a29dc8fdc734
+## explicit
 golang.org/x/crypto/ssh/terminal
 # golang.org/x/sys v0.0.0-20190412213103-97732733099d
+## explicit; go 1.12
 golang.org/x/sys/unix
 golang.org/x/sys/windows
