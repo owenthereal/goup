@@ -1,20 +1,24 @@
 package commands
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"log"
+	"net/http"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"runtime"
 	"strings"
+	"time"
 
+	"github.com/google/go-github/v39/github"
 	"github.com/kierdavis/ansi"
 	"github.com/spf13/cobra"
 	"github.com/tj/go-update"
 	"github.com/tj/go-update/progress"
-	"github.com/tj/go-update/stores/github"
+	"golang.org/x/oauth2"
 )
 
 func upgradeCmd() *cobra.Command {
@@ -33,10 +37,11 @@ func runUpgrade(cmd *cobra.Command, args []string) error {
 	m := &manager{
 		Manager: &update.Manager{
 			Command: "goup",
-			Store: &github.Store{
-				Owner:   "owenthereal",
-				Repo:    "goup",
-				Version: Version,
+			Store: &githubStore{
+				Owner:       "owenthereal",
+				Repo:        "goup",
+				Version:     Version,
+				AccessToken: os.Getenv("GITHUB_TOKEN"),
 			},
 		},
 	}
@@ -193,4 +198,89 @@ func copyFile(dst, src string) (err error) {
 	}
 
 	return
+}
+
+type githubStore struct {
+	Owner       string
+	Repo        string
+	Version     string
+	AccessToken string
+}
+
+func (s *githubStore) client(ctx context.Context) *github.Client {
+	var tc *http.Client
+
+	if token := s.AccessToken; token != "" {
+		ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})
+		tc = oauth2.NewClient(ctx, ts)
+	}
+
+	return github.NewClient(tc)
+
+}
+
+// GetRelease returns the specified release or ErrNotFound.
+func (s *githubStore) GetRelease(version string) (*update.Release, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	gh := s.client(ctx)
+
+	r, res, err := gh.Repositories.GetReleaseByTag(ctx, s.Owner, s.Repo, "v"+version)
+
+	if res.StatusCode == 404 {
+		return nil, update.ErrNotFound
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	return githubRelease(r), nil
+}
+
+// LatestReleases returns releases newer than Version, or nil.
+func (s *githubStore) LatestReleases() (latest []*update.Release, err error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	gh := s.client(ctx)
+
+	releases, _, err := gh.Repositories.ListReleases(ctx, s.Owner, s.Repo, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, r := range releases {
+		tag := r.GetTagName()
+
+		if tag == s.Version || "v"+s.Version == tag {
+			break
+		}
+
+		latest = append(latest, githubRelease(r))
+	}
+
+	return
+}
+
+// githubRelease returns a Release.
+func githubRelease(r *github.RepositoryRelease) *update.Release {
+	out := &update.Release{
+		Version:     r.GetTagName(),
+		Notes:       r.GetBody(),
+		PublishedAt: r.GetPublishedAt().Time,
+		URL:         r.GetURL(),
+	}
+
+	for _, a := range r.Assets {
+		out.Assets = append(out.Assets, &update.Asset{
+			Name:      a.GetName(),
+			Size:      a.GetSize(),
+			URL:       a.GetBrowserDownloadURL(),
+			Downloads: a.GetDownloadCount(),
+		})
+	}
+
+	return out
 }
