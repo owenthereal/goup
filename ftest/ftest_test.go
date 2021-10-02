@@ -86,12 +86,40 @@ func TestGoup(t *testing.T) {
 
 	goupBin := filepath.Join(commands.GoupBinDir(), "goup")
 
-	t.Run("goup install", func(t *testing.T) {
+	t.Run("goup install 1.15.2", func(t *testing.T) {
 		cmd := exec.Command(goupBin, "install", "1.15.2")
 		execCmd(t, cmd)
 	})
 
-	t.Run("goup show", func(t *testing.T) {
+	t.Run("goup show 1.15.2", func(t *testing.T) {
+		cmd := exec.Command(goupBin, "show")
+		out := execCmd(t, cmd)
+
+		if want, got := []byte("1.15.2"), out; !bytes.Contains(got, want) {
+			t.Fatalf("goup show failed: want=%s got=%s", want, out)
+		}
+	})
+
+	t.Run("goup install 1.15.3", func(t *testing.T) {
+		cmd := exec.Command(goupBin, "install", "1.15.3")
+		execCmd(t, cmd)
+	})
+
+	t.Run("goup show 1.15.3", func(t *testing.T) {
+		cmd := exec.Command(goupBin, "show")
+		out := execCmd(t, cmd)
+
+		if want, got := []byte("1.15.3"), out; !bytes.Contains(got, want) {
+			t.Fatalf("goup show failed: want=%s got=%s", want, out)
+		}
+	})
+
+	t.Run("goup default 1.15.2", func(t *testing.T) {
+		cmd := exec.Command(goupBin, "default", "1.15.2")
+		execCmd(t, cmd)
+	})
+
+	t.Run("goup show 1.15.2", func(t *testing.T) {
 		cmd := exec.Command(goupBin, "show")
 		out := execCmd(t, cmd)
 
@@ -109,12 +137,12 @@ func TestGoup(t *testing.T) {
 		}
 	})
 
-	t.Run("goup remove", func(t *testing.T) {
+	t.Run("goup remove 1.15.2", func(t *testing.T) {
 		cmd := exec.Command(goupBin, "remove", "1.15.2")
 		execCmd(t, cmd)
 	})
 
-	t.Run("goup show again", func(t *testing.T) {
+	t.Run("goup show does not have 1.15.2", func(t *testing.T) {
 		cmd := exec.Command(goupBin, "show")
 		out := execCmd(t, cmd)
 

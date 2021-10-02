@@ -4,7 +4,6 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/manifoldco/promptui"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -39,12 +38,13 @@ func NewCommand() *cobra.Command {
 		Use:               "goup",
 		Short:             "The Go installer",
 		PersistentPreRunE: preRunRoot,
-		RunE:              runChooseVersion,
+		RunE:              runDefault,
 	}
 
 	rootCmd.PersistentFlags().BoolVarP(&rootCmdVerboseFlag, "verbose", "v", false, "Verbose")
 
 	rootCmd.AddCommand(installCmd())
+	rootCmd.AddCommand(defaultCmd())
 	rootCmd.AddCommand(removeCmd())
 	rootCmd.AddCommand(initCmd())
 	rootCmd.AddCommand(showCmd())
@@ -86,50 +86,6 @@ func preRunRoot(cmd *cobra.Command, args []string) error {
 	if rootCmdVerboseFlag {
 		logger.SetLevel(logrus.DebugLevel)
 	}
-
-	return nil
-}
-
-func runChooseVersion(cmd *cobra.Command, args []string) error {
-	vers, err := listGoVers()
-	if err != nil {
-		return err
-	}
-
-	if len(vers) == 0 {
-		showGoIfExist()
-		return nil
-	}
-
-	var (
-		pos int
-	)
-
-	var items = make([]string, 0, len(vers))
-
-	for idx, v := range vers {
-		items = append(items, v.Ver)
-		if v.Current {
-			pos = idx
-		}
-	}
-
-	prompt := promptui.Select{
-		Label:     "Select a version",
-		Items:     items,
-		CursorPos: pos,
-	}
-
-	_, ver, err := prompt.Run()
-	if err != nil {
-		return err
-	}
-
-	if err := symlink("go" + ver); err != nil {
-		return err
-	}
-
-	logger.Printf("Default Go is set to '%s'", ver)
 
 	return nil
 }
