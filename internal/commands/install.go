@@ -103,11 +103,9 @@ func runInstall(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	if err := symlink(ver); err != nil {
+	if err := switchVer(ver); err != nil {
 		return err
 	}
-
-	logger.Printf("Default Go is set to '%s'", ver)
 
 	return nil
 }
@@ -138,9 +136,32 @@ func latestGoVersion() (string, error) {
 	return strings.TrimSpace(string(version)), nil
 }
 
+func switchVer(ver string) error {
+	if !strings.HasPrefix(ver, "go") {
+		ver = "go" + ver
+	}
+
+	err := symlink(ver)
+
+	if err == nil {
+		logger.Printf("Default Go is set to '%s'", ver)
+	}
+
+	return err
+}
+
 func symlink(ver string) error {
 	current := GoupCurrentDir()
 	version := goupVersionDir(ver)
+
+	if _, err := os.Stat(version); err != nil {
+		if os.IsNotExist(err) {
+			return fmt.Errorf("Go version %s is not installed. Install it with `goup install`.", ver)
+
+		} else {
+			return err
+		}
+	}
 
 	// ignore error, similar to rm -f
 	os.Remove(current)
