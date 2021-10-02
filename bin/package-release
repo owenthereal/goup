@@ -4,7 +4,7 @@ set -e
 
 source $(dirname $(realpath $0))/util.sh
 
-OSARCH="darwin/amd64 linux/amd64 linux/386 linux/arm windows/amd64 windows/386 freebsd/amd64 freebsd/arm"
+OSARCH="darwin/amd64 darwin/arm64 linux/amd64 linux/386 linux/arm64 windows/amd64 windows/386 freebsd/amd64 freebsd/arm64"
 
 echo "Packaging goup $(version)"
 echo

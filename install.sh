@@ -132,7 +132,7 @@ get_architecture() {
   if [ "$_ostype" = Darwin ] && [ "$_cputype" = i386 ]; then
     # Darwin `uname -m` lies
     if sysctl hw.optional.x86_64 | grep -q ': 1'; then
-      _cputype=amd64
+      _cputype=x86_64
     fi
   fi
 
@@ -167,7 +167,11 @@ get_architecture() {
       _cputype=arm
       ;;
 
-    aarch64 | x86_64 | x86-64 | x64 | amd64)
+    aarch64 | arm64)
+      _cputype=arm64
+      ;;
+
+    x86_64 | x86-64 | x64 | amd64)
       _cputype=amd64
       ;;
 
