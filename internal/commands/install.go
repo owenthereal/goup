@@ -36,6 +36,30 @@ var (
 	installCmdGoHostFlag string
 )
 
+func GetGoSourceGitURL() string {
+	gsURL := os.Getenv("GOUP_GO_SOURCE_GIT_URL")
+	if gsURL == "" {
+		gsURL = goSourceGitURL
+	}
+	return gsURL
+}
+
+func GetGoDownloadBaseURL() string {
+	gdURL := os.Getenv("GOUP_GO_DOWNLOAD_BASE_URL")
+	if gdURL == "" {
+		gdURL = goDownloadBaseURL
+	}
+	return gdURL
+}
+
+func GetGoHost() string {
+	gh := os.Getenv("GOUP_GO_HOST")
+	if gh == "" {
+		gh = goHost
+	}
+	return gh
+}
+
 func installCmd() *cobra.Command {
 	installCmd := &cobra.Command{
 		Use:   "install [VERSION]",
@@ -54,12 +78,7 @@ number can be provided.`,
 		RunE:              runInstall,
 	}
 
-	gh := os.Getenv("GOUP_GO_HOST")
-	if gh == "" {
-		gh = goHost
-	}
-
-	installCmd.PersistentFlags().StringVar(&installCmdGoHostFlag, "host", gh, "host that is used to download Go. The GOUP_GO_HOST environment variable overrides this flag.")
+	installCmd.PersistentFlags().StringVar(&installCmdGoHostFlag, "host", GetGoHost(), "host that is used to download Go. The GOUP_GO_HOST environment variable overrides this flag.")
 
 	return installCmd
 }
@@ -251,10 +270,17 @@ func installTip(clNumber string) error {
 		if err := os.MkdirAll(root, 0755); err != nil {
 			return fmt.Errorf("failed to create repository: %v", err)
 		}
-		if err := git("clone", "--depth=1", goSourceGitURL, root); err != nil {
+
+		if err := git("clone", "--depth=1", GetGoSourceGitURL(), root); err != nil {
 			return fmt.Errorf("failed to clone git repository: %v", err)
 		}
-		if err := git("remote", "add", "upstream", goSourceUpsteamGitURL); err != nil {
+
+		gsuURL := os.Getenv("GOUP_GO_SOURCE_GIT_URL")
+		if gsuURL == "" {
+			gsuURL = goSourceUpsteamGitURL
+		}
+
+		if err := git("remote", "add", "upstream", gsuURL); err != nil {
 			return fmt.Errorf("failed to add upstream git repository: %v", err)
 		}
 	}
@@ -621,7 +647,7 @@ func versionArchiveURL(version string) string {
 		arch = "armv6l"
 	}
 
-	return fmt.Sprintf("%s/%s.%s-%s.%s", goDownloadBaseURL, version, goos, arch, ext)
+	return fmt.Sprintf("%s/%s.%s-%s.%s", GetGoDownloadBaseURL(), version, goos, arch, ext)
 }
 
 // unpackedOkay is a sentinel zero-byte file to indicate that the Go
