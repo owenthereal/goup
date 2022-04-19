@@ -38,7 +38,6 @@ func NewCommand() *cobra.Command {
 		Use:               "goup",
 		Short:             "The Go installer",
 		PersistentPreRunE: preRunRoot,
-		RunE:              runDefault,
 	}
 
 	rootCmd.PersistentFlags().BoolVarP(&rootCmdVerboseFlag, "verbose", "v", false, "Verbose")
