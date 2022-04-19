@@ -1,6 +1,6 @@
 module github.com/owenthereal/goup
 
-go 1.17
+go 1.18
 
 require (
 	github.com/apex/log v1.9.0 // indirect
@@ -13,10 +13,10 @@ require (
 	github.com/hooklift/assert v0.1.0 // indirect
 	github.com/kierdavis/ansi v0.0.0-20180105022324-90d93b0fcae2
 	github.com/klauspost/pgzip v1.2.5 // indirect
-	github.com/manifoldco/promptui v0.8.0
-	github.com/olekukonko/tablewriter v0.0.4
-	github.com/sirupsen/logrus v1.2.0
-	github.com/spf13/cobra v1.0.0
+	github.com/manifoldco/promptui v0.9.0
+	github.com/olekukonko/tablewriter v0.0.6-0.20210304033056-74c60be0ef68
+	github.com/sirupsen/logrus v1.8.1
+	github.com/spf13/cobra v1.4.0
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/tj/go-update v2.2.5-0.20200519121640-62b4b798fd68+incompatible
 	github.com/ulikunitz/xz v0.5.8 // indirect
@@ -28,19 +28,15 @@ require (
 	github.com/golang/protobuf v1.4.2 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
-	github.com/juju/ansiterm v0.0.0-20180109212912-720a0952cc2a // indirect
 	github.com/klauspost/compress v1.4.1 // indirect
 	github.com/klauspost/cpuid v1.2.0 // indirect
-	github.com/konsorten/go-windows-terminal-sequences v1.0.1 // indirect
-	github.com/lunixbochs/vtclean v0.0.0-20180621232353-2d01aacdc34a // indirect
-	github.com/mattn/go-colorable v0.1.2 // indirect
 	github.com/mattn/go-isatty v0.0.8 // indirect
-	github.com/mattn/go-runewidth v0.0.7 // indirect
+	github.com/mattn/go-runewidth v0.0.10 // indirect
 	github.com/pkg/errors v0.8.1 // indirect
+	github.com/rivo/uniseg v0.1.0 // indirect
 	golang.org/x/crypto v0.0.0-20210817164053-32db794688a5 // indirect
 	golang.org/x/net v0.0.0-20210226172049-e18ecbb05110 // indirect
 	golang.org/x/sys v0.0.0-20210615035016-665e8c7367d1 // indirect
-	golang.org/x/term v0.0.0-20201126162022-7de9c90e9dd1 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/protobuf v1.25.0 // indirect
 )
