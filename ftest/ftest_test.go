@@ -128,12 +128,12 @@ func TestGoup(t *testing.T) {
 		}
 	})
 
-	t.Run("goup ls-ver", func(t *testing.T) {
-		cmd := exec.Command(goupBin, "ls-ver")
+	t.Run("goup search", func(t *testing.T) {
+		cmd := exec.Command(goupBin, "search")
 		out := execCmd(t, cmd)
 
 		if want, got := []byte("1.15.2"), out; !bytes.Contains(got, want) {
-			t.Fatalf("goup ls-ver failed: want=%s got=%s", want, out)
+			t.Fatalf("goup search failed: want=%s got=%s", want, out)
 		}
 	})
 
