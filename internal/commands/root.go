@@ -43,7 +43,7 @@ func NewCommand() *cobra.Command {
 	rootCmd.PersistentFlags().BoolVarP(&rootCmdVerboseFlag, "verbose", "v", false, "Verbose")
 
 	rootCmd.AddCommand(installCmd())
-	rootCmd.AddCommand(defaultCmd())
+	rootCmd.AddCommand(setCmd())
 	rootCmd.AddCommand(removeCmd())
 	rootCmd.AddCommand(initCmd())
 	rootCmd.AddCommand(showCmd())
