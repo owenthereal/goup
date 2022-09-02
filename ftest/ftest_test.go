@@ -90,12 +90,12 @@ func TestGoup(t *testing.T) {
 		execCmd(t, cmd)
 	})
 
-	t.Run("goup show 1.15.2", func(t *testing.T) {
-		cmd := exec.Command(goupBin, "show")
+	t.Run("goup ls 1.15.2", func(t *testing.T) {
+		cmd := exec.Command(goupBin, "list")
 		out := execCmd(t, cmd)
 
 		if want, got := []byte("1.15.2"), out; !bytes.Contains(got, want) {
-			t.Fatalf("goup show failed: want=%s got=%s", want, out)
+			t.Fatalf("goup list failed: want=%s got=%s", want, out)
 		}
 	})
 
@@ -104,12 +104,12 @@ func TestGoup(t *testing.T) {
 		execCmd(t, cmd)
 	})
 
-	t.Run("goup show 1.15.3", func(t *testing.T) {
-		cmd := exec.Command(goupBin, "show")
+	t.Run("goup ls 1.15.3", func(t *testing.T) {
+		cmd := exec.Command(goupBin, "list")
 		out := execCmd(t, cmd)
 
 		if want, got := []byte("1.15.3"), out; !bytes.Contains(got, want) {
-			t.Fatalf("goup show failed: want=%s got=%s", want, out)
+			t.Fatalf("goup list failed: want=%s got=%s", want, out)
 		}
 	})
 
@@ -118,12 +118,12 @@ func TestGoup(t *testing.T) {
 		execCmd(t, cmd)
 	})
 
-	t.Run("goup show 1.15.2", func(t *testing.T) {
-		cmd := exec.Command(goupBin, "show")
+	t.Run("goup ls 1.15.2", func(t *testing.T) {
+		cmd := exec.Command(goupBin, "list")
 		out := execCmd(t, cmd)
 
 		if want, got := []byte("1.15.2"), out; !bytes.Contains(got, want) {
-			t.Fatalf("goup show failed: want=%s got=%s", want, out)
+			t.Fatalf("goup list failed: want=%s got=%s", want, out)
 		}
 	})
 
@@ -141,12 +141,12 @@ func TestGoup(t *testing.T) {
 		execCmd(t, cmd)
 	})
 
-	t.Run("goup show does not have 1.15.2", func(t *testing.T) {
-		cmd := exec.Command(goupBin, "show")
+	t.Run("goup ls does not have 1.15.2", func(t *testing.T) {
+		cmd := exec.Command(goupBin, "list")
 		out := execCmd(t, cmd)
 
 		if want, got := []byte("1.15.2"), out; bytes.Contains(got, want) {
-			t.Fatalf("goup show again failed: want=%s got=%s", want, out)
+			t.Fatalf("goup list again failed: want=%s got=%s", want, out)
 		}
 	})
 

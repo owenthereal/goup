@@ -11,16 +11,17 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func showCmd() *cobra.Command {
+func listCmd() *cobra.Command {
 	return &cobra.Command{
-		Use:   "show",
-		Short: "Show installed Go",
-		Long:  "Show installed Go versions.",
-		RunE:  runShow,
+		Use:     "ls",
+		Aliases: []string{"list"},
+		Short:   "List all installed Go",
+		Long:    "List all installed Go versions.",
+		RunE:    runList,
 	}
 }
 
-func runShow(cmd *cobra.Command, args []string) error {
+func runList(cmd *cobra.Command, args []string) error {
 	vers, err := listGoVers()
 	if err != nil {
 		return err

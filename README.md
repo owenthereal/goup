@@ -56,7 +56,7 @@ Downloaded 100.0% (121149509 / 121149509 bytes)
 INFO[0030] Unpacking /home/owen/.go/go1.15.2/go1.15.2.linux-amd64.tar.gz ...
 INFO[0043] Success: go1.15.2 downloaded in /home/owen/.go/go1.15.2
 INFO[0043] Default Go is set to 'go1.15.2'
-$ goup show
+$ goup ls
 go1.15.2
 $ go env GOROOT
 /home/owen/.go/go1.15.2
@@ -85,7 +85,7 @@ Building packages and commands for linux/amd64.
 Installed Go for linux/amd64 in /home/owen/.go/gotip
 Installed commands in /home/owen/.go/gotip/bin
 INFO[0297] Default Go is set to 'gotip'
-$ goup show
+$ goup ls
 gotip
 $ go env GOROOT
 /home/owen/.go/gotip
@@ -102,7 +102,7 @@ $ GOUP_GO_HOST=golang.google.cn goup install # For Gophers in China, see https:/
 * `goup` switches to selected Go version.
 * `goup default` switches to selected Go version.
 * `goup install` downloads specified version of Go to`$HOME/.go/VERSION` and symlinks it to `$HOME/.go/current`.
-* `goup show` shows the activated Go version located at `$HOME/.go/current`.
+* `goup ls` list all installed Go version located at `$HOME/.go/current`.
 * `goup remove` removes the specified Go version.
 * `goup search` lists all available Go versions from https://golang.org/dl.
 * `goup upgrade` upgrades goup.
