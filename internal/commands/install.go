@@ -25,7 +25,7 @@ import (
 )
 
 const (
-	goHost                = "golang.org"
+	goHost                = "go.dev"
 	goDownloadBaseURL     = "https://dl.google.com/go"
 	goSourceGitURL        = "https://github.com/golang/go"
 	goSourceUpsteamGitURL = "https://go.googlesource.com/go"
@@ -257,7 +257,7 @@ func installTip(clNumber string) error {
 
 	if clNumber != "" {
 		prompt := promptui.Prompt{
-			Label:     fmt.Sprintf("This will download and execute code from golang.org/cl/%s, continue", clNumber),
+			Label:     fmt.Sprintf("This will download and execute code from go.dev/cl/%s, continue", clNumber),
 			IsConfirm: true,
 		}
 
