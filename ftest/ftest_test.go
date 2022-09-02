@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
@@ -33,7 +32,7 @@ func TestMain(m *testing.M) {
 	flag.StringVar(&flagInstallPath, "install-path", filepath.Join(pwd, "..", "install.sh"), "install.sh path")
 	flag.Parse()
 
-	goupBinDir, err = ioutil.TempDir("", "")
+	goupBinDir, err = os.MkdirTemp("", "")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -152,7 +151,7 @@ func TestGoup(t *testing.T) {
 	})
 
 	t.Run("goup upgrade", func(t *testing.T) {
-		cmd := exec.Command(goupBin, "upgrade", "0.1.4")
+		cmd := exec.Command(goupBin, "upgrade", "0.2.1")
 		cmd.Env = append(os.Environ(), fmt.Sprintf("PATH=%s:$PATH", filepath.Dir(goupBin)))
 		out, err := cmd.CombinedOutput()
 		if err != nil {
@@ -165,7 +164,7 @@ func TestGoup(t *testing.T) {
 		cmd := exec.Command(goupBin, "version")
 		out := execCmd(t, cmd)
 
-		if want, got := []byte("0.1.4"), out; !bytes.Contains(got, want) {
+		if want, got := []byte("0.2.1"), out; !bytes.Contains(got, want) {
 			t.Fatalf("goup version failed: want=%s got=%s", want, out)
 		}
 	})
@@ -185,7 +184,7 @@ func execCmd(t *testing.T, cmd *exec.Cmd) []byte {
 }
 
 func fileContains(f string, s string) (bool, error) {
-	b, err := ioutil.ReadFile(f)
+	b, err := os.ReadFile(f)
 	if err != nil {
 		return false, err
 	}

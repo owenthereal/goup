@@ -4,8 +4,13 @@ SHELL=/bin/bash -o pipefail
 .PHONY: vet
 vet:
 	shellcheck -s dash -- install.sh
-	# somehow the volume is mounted as user 1000 :shurg:
-	docker run --rm -v $$(pwd):/app:z -w /app golangci/golangci-lint:latest golangci-lint run -v
+	docker \
+		run \
+		--rm \
+		-v $(CURDIR):/app \
+		-w /app \
+		golangci/golangci-lint:latest \
+		golangci-lint run --timeout 5m -v
 
 .PHONY: build
 build:

@@ -2,7 +2,6 @@ package commands
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -66,7 +65,7 @@ type goVer struct {
 }
 
 func listGoVers() ([]goVer, error) {
-	files, err := ioutil.ReadDir(GoupDir())
+	files, err := os.ReadDir(GoupDir())
 	if err != nil {
 		return nil, err
 	}

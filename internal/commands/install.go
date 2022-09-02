@@ -8,7 +8,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
@@ -125,10 +124,10 @@ func latestGoVersion() (string, error) {
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode > 299 {
-		b, _ := ioutil.ReadAll(io.LimitReader(resp.Body, 1024))
+		b, _ := io.ReadAll(io.LimitReader(resp.Body, 1024))
 		return "", fmt.Errorf("Could not get current Go version: HTTP %d: %q", resp.StatusCode, b)
 	}
-	version, err := ioutil.ReadAll(resp.Body)
+	version, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return "", err
 	}
@@ -220,7 +219,7 @@ func install(version string) error {
 	if err := unpackArchive(targetDir, archiveFile); err != nil {
 		return fmt.Errorf("extracting archive %v: %v", archiveFile, err)
 	}
-	if err := ioutil.WriteFile(filepath.Join(targetDir, unpackedOkay), nil, 0644); err != nil {
+	if err := os.WriteFile(filepath.Join(targetDir, unpackedOkay), nil, 0644); err != nil {
 		return err
 	}
 	logger.Printf("Success: %s downloaded in %v", version, targetDir)
@@ -504,7 +503,7 @@ func slurpURLToString(url_ string) (string, error) {
 	if res.StatusCode != http.StatusOK {
 		return "", fmt.Errorf("%s: %v", url_, res.Status)
 	}
-	slurp, err := ioutil.ReadAll(res.Body)
+	slurp, err := io.ReadAll(res.Body)
 	if err != nil {
 		return "", fmt.Errorf("reading %s: %v", url_, err)
 	}

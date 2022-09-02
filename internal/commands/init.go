@@ -3,7 +3,6 @@ package commands
 import (
 	"bufio"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"text/template"
@@ -106,7 +105,7 @@ func runInit(cmd *cobra.Command, args []string) error {
 	// ignore error, similar to rm -f
 	os.Remove(ef)
 
-	if err := ioutil.WriteFile(ef, []byte(GoupEnvFileContent), 0664); err != nil {
+	if err := os.WriteFile(ef, []byte(GoupEnvFileContent), 0664); err != nil {
 		return err
 	}
 
