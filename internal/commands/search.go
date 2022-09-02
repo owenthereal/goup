@@ -8,15 +8,15 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func listCmd() *cobra.Command {
+func searchCmd() *cobra.Command {
 	return &cobra.Command{
-		Use:   "ls-ver [REGEXP]",
-		Short: `List Go versions to install`,
-		Long: `List available Go versions matching a regexp filter for installation. If no filter is provided,
+		Use:   "search [REGEXP]",
+		Short: `Search Go versions to install`,
+		Long: `Search available Go versions matching a regexp filter for installation. If no filter is provided,
 list all available versions.`,
 		Example: `
-  goup ls-ver
-  goup ls-ver 1.15
+  goup search
+  goup search 1.15
 `,
 		RunE: runList,
 	}

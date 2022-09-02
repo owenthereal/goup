@@ -104,7 +104,7 @@ $ GOUP_GO_HOST=golang.google.cn goup install # For Gophers in China, see https:/
 * `goup install` downloads specified version of Go to`$HOME/.go/VERSION` and symlinks it to `$HOME/.go/current`.
 * `goup show` shows the activated Go version located at `$HOME/.go/current`.
 * `goup remove` removes the specified Go version.
-* `goup ls-ver` lists all available Go versions from https://golang.org/dl.
+* `goup search` lists all available Go versions from https://golang.org/dl.
 * `goup upgrade` upgrades goup.
 
 ## License
