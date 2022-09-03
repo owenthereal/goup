@@ -18,11 +18,11 @@ list all available versions.`,
   goup search
   goup search 1.15
 `,
-		RunE: runList,
+		RunE: runSearch,
 	}
 }
 
-func runList(cmd *cobra.Command, args []string) error {
+func runSearch(cmd *cobra.Command, args []string) error {
 	var regexp string
 	if len(args) > 0 {
 		regexp = args[0]
