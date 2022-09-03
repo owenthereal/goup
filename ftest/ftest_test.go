@@ -113,8 +113,8 @@ func TestGoup(t *testing.T) {
 		}
 	})
 
-	t.Run("goup default 1.15.2", func(t *testing.T) {
-		cmd := exec.Command(goupBin, "default", "1.15.2")
+	t.Run("goup set 1.15.2", func(t *testing.T) {
+		cmd := exec.Command(goupBin, "set", "1.15.2")
 		execCmd(t, cmd)
 	})
 

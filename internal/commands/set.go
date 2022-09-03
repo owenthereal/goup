@@ -5,21 +5,21 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func defaultCmd() *cobra.Command {
+func setCmd() *cobra.Command {
 	return &cobra.Command{
-		Use:   "default <VERSION>...",
+		Use:   "set <VERSION>...",
 		Short: "Set the default Go version",
 		Long: `Set the default Go version to one specified. If no version is provided,
 a prompt will show to select a installed Go version.`,
 		Example: `
-  goup default # A prompt will show to select a version
-  goup default 1.15.2
+  goup set # A prompt will show to select a version
+  goup set 1.15.2
 `,
-		RunE: runDefault,
+		RunE: runSetDefault,
 	}
 }
 
-func runDefault(cmd *cobra.Command, args []string) error {
+func runSetDefault(cmd *cobra.Command, args []string) error {
 	if len(args) > 0 {
 		return switchVer(args[0])
 	}
