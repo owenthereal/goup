@@ -13,8 +13,8 @@ import (
 
 func listCmd() *cobra.Command {
 	return &cobra.Command{
-		Use:     "ls",
-		Aliases: []string{"list"},
+		Use:     "list",
+		Aliases: []string{"ls"},
 		Short:   "List all installed Go",
 		Long:    "List all installed Go versions.",
 		RunE:    runList,
