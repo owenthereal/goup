@@ -10,9 +10,10 @@ import (
 
 func removeCmd() *cobra.Command {
 	return &cobra.Command{
-		Use:   "remove <VERSION>...",
-		Short: "Remove Go with a version",
-		Long:  "Remove Go by providing a version.",
+		Use:     "remove <VERSION>...",
+		Aliases: []string{"rm"},
+		Short:   "Remove Go with a version",
+		Long:    "Remove Go by providing a version.",
 		Example: `
   goup remove 1.15.2
   goup remove 1.16.1 1.16.2
