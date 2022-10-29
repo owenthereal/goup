@@ -171,14 +171,11 @@ func symlink(ver string) error {
 func install(version string) error {
 	targetDir := goupVersionDir(version)
 
-	if _, err := os.Stat(filepath.Join(targetDir, unpackedOkay)); err == nil {
-		logger.Printf("%s: already downloaded in %v", version, targetDir)
+	if checkInstalled(targetDir) {
+		logger.Printf("%s: already installed in %v", version, targetDir)
 		return nil
 	}
 
-	if err := os.MkdirAll(targetDir, 0755); err != nil {
-		return err
-	}
 	goURL := versionArchiveURL(version)
 	res, err := http.Head(goURL)
 	if err != nil {
@@ -190,6 +187,11 @@ func install(version string) error {
 	if res.StatusCode != http.StatusOK {
 		return fmt.Errorf("server returned %v checking size of %v", http.StatusText(res.StatusCode), goURL)
 	}
+
+	if err := os.MkdirAll(targetDir, 0755); err != nil {
+		return err
+	}
+
 	base := path.Base(goURL)
 	archiveFile := filepath.Join(targetDir, base)
 	if fi, err := os.Stat(archiveFile); err != nil || fi.Size() != res.ContentLength {
@@ -219,10 +221,11 @@ func install(version string) error {
 	if err := unpackArchive(targetDir, archiveFile); err != nil {
 		return fmt.Errorf("extracting archive %v: %v", archiveFile, err)
 	}
-	if err := os.WriteFile(filepath.Join(targetDir, unpackedOkay), nil, 0644); err != nil {
+
+	if err := setInstalled(targetDir); err != nil {
 		return err
 	}
-	logger.Printf("Success: %s downloaded in %v", version, targetDir)
+	logger.Printf("Success: %s installed in %v", version, targetDir)
 	return nil
 }
 
