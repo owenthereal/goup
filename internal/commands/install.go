@@ -3,6 +3,7 @@ package commands
 import (
 	"archive/tar"
 	"archive/zip"
+	"bufio"
 	"compress/gzip"
 	"crypto/sha256"
 	"errors"
@@ -127,12 +128,12 @@ func latestGoVersion() (string, error) {
 		b, _ := io.ReadAll(io.LimitReader(resp.Body, 1024))
 		return "", fmt.Errorf("Could not get current Go version: HTTP %d: %q", resp.StatusCode, b)
 	}
-	version, err := io.ReadAll(resp.Body)
+	version, err := bufio.NewReader(resp.Body).ReadString('\n')
 	if err != nil {
 		return "", err
 	}
 
-	return strings.TrimSpace(string(version)), nil
+	return strings.TrimSpace(version), nil
 }
 
 func switchVer(ver string) error {
