@@ -66,7 +66,8 @@ type goVer struct {
 }
 
 func listGoVers() ([]goVer, error) {
-	files, err := os.ReadDir(GoupDir())
+	baseDir := GoupDir()
+	files, err := os.ReadDir(baseDir)
 	if err != nil {
 		return nil, err
 	}
@@ -78,7 +79,14 @@ func listGoVers() ([]goVer, error) {
 
 	var vers []goVer
 	for _, file := range files {
+		if !file.IsDir() {
+			continue
+		}
 		if strings.HasPrefix(file.Name(), "go") {
+			// will not set installed for the gotip, so should not check installed for it
+			if file.Name() != "gotip" && !checkInstalled(filepath.Join(baseDir, file.Name())) {
+				continue
+			}
 			vers = append(vers, goVer{
 				Ver:     strings.TrimPrefix(file.Name(), "go"),
 				Current: current == file.Name(),

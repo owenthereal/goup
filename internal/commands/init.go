@@ -177,3 +177,14 @@ func checkStringExistsFile(filename, value string) (bool, error) {
 
 	return false, scanner.Err()
 }
+
+func checkInstalled(targetDir string) bool {
+	if _, err := os.Stat(filepath.Join(targetDir, unpackedOkay)); err == nil {
+		return true
+	}
+	return false
+}
+
+func setInstalled(targetDir string) error {
+	return os.WriteFile(filepath.Join(targetDir, unpackedOkay), nil, 0644)
+}
