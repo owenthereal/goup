@@ -60,6 +60,13 @@ func GetGoHost() string {
 	return gh
 }
 
+func getGoArch() string {
+	if arch := os.Getenv("GOUP_GO_ARCH"); arch != "" {
+		return arch
+	}
+	return runtime.GOARCH
+}
+
 func installCmd() *cobra.Command {
 	installCmd := &cobra.Command{
 		Use:   "install [VERSION]",
@@ -202,7 +209,7 @@ func install(version string) error {
 		return err
 	}
 	if res.StatusCode == http.StatusNotFound {
-		return fmt.Errorf("no binary release of %v for %v/%v at %v", version, getOS(), runtime.GOARCH, goURL)
+		return fmt.Errorf("no binary release of %v for %v/%v at %v", version, getOS(), getGoArch(), goURL)
 	}
 	if res.StatusCode != http.StatusOK {
 		return fmt.Errorf("server returned %v checking size of %v", http.StatusText(res.StatusCode), goURL)
@@ -642,8 +649,8 @@ func versionArchiveURL(version string) string {
 		ext = "zip"
 	}
 
-	arch := runtime.GOARCH
-	if goos == "linux" && runtime.GOARCH == "arm" {
+	arch := getGoArch()
+	if goos == "linux" && arch == "arm" {
 		arch = "armv6l"
 	}
 
