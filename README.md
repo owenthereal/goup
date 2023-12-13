@@ -34,6 +34,12 @@ Install by skipping the confirmation prompt, e.g., for automation:
 curl -sSf https://raw.githubusercontent.com/owenthereal/goup/master/install.sh | sh -s -- '--skip-prompt'
 ```
 
+### With Go Toolchain
+
+```
+go install github.com/owenthereal/goup/cmd/goup@latest
+```
+
 ### Manual
 
 If you want to install manually, there are the steps:
