@@ -25,9 +25,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// https://go.dev/dl/go1.23.3.darwin-amd64.tar.gz
 const (
 	goHost                = "go.dev"
-	goDownloadBaseURL     = "https://dl.google.com/go"
+	goDownloadBaseURL     = "https://go.dev/dl"
 	goSourceGitURL        = "https://github.com/golang/go"
 	goSourceUpsteamGitURL = "https://go.googlesource.com/go"
 )
@@ -237,13 +238,14 @@ func install(version string) error {
 			return fmt.Errorf("downloaded file %s size %v doesn't match server size %v", archiveFile, fi.Size(), res.ContentLength)
 		}
 	}
-	wantSHA, err := slurpURLToString(goURL + ".sha256")
-	if err != nil {
-		return err
-	}
-	if err := verifySHA256(archiveFile, strings.TrimSpace(wantSHA)); err != nil {
-		return fmt.Errorf("error verifying SHA256 of %v: %v", archiveFile, err)
-	}
+	// go.dev/dl no .sha256 file, so skip checking for now
+	//wantSHA, err := slurpURLToString(goURL + ".sha256")
+	//if err != nil {
+	//	return err
+	//}
+	//if err := verifySHA256(archiveFile, strings.TrimSpace(wantSHA)); err != nil {
+	//	return fmt.Errorf("error verifying SHA256 of %v: %v", archiveFile, err)
+	//}
 	logger.Printf("Unpacking %v ...", archiveFile)
 	if err := unpackArchive(targetDir, archiveFile); err != nil {
 		return fmt.Errorf("extracting archive %v: %v", archiveFile, err)
